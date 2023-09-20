@@ -32,9 +32,9 @@
                 <Separator/>
                 <MenuItem x:Name="ImportPostmanCollectionMenuItem" Header="Import _Postman Collection..." Click="ImportPostmanCollectionMenuItem_Click"/>
             </MenuItem>
-            <MenuItem Header="Collection">
-                <MenuItem x:Name="NewCollectionMenuItem" Header="New Collection..." Click="NewCollectionMenuItem_Click"/>
-                <MenuItem x:Name="RenameCollectionMenuItem" Header="Rename Collection..." Click="RenameCollectionMenuItem_Click">
+            <MenuItem Header="_Collection">
+                <MenuItem x:Name="NewCollectionMenuItem" Header="_New Collection..." Click="NewCollectionMenuItem_Click"/>
+                <MenuItem x:Name="RenameCollectionMenuItem" Header="_Rename Collection..." Click="RenameCollectionMenuItem_Click">
                     <MenuItem.Style>
                         <Style TargetType="MenuItem">
                             <Style.Triggers>
@@ -45,7 +45,7 @@
                         </Style>
                     </MenuItem.Style>
                 </MenuItem>
-                <MenuItem x:Name="DeleteCollectionMenuItem" Header="Delete Collection..." Click="DeleteCollectionMenuItem_Click">
+                <MenuItem x:Name="DeleteCollectionMenuItem" Header="_Delete Collection..." Click="DeleteCollectionMenuItem_Click">
                     <MenuItem.Style>
                         <Style TargetType="MenuItem">
                             <Style.Triggers>
@@ -79,21 +79,7 @@
 
             <ComboBox Grid.Column="0" VerticalAlignment="Top" Margin="10,10,5,0" Height="20" ItemsSource="{Binding Collections}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedCollection, Mode=TwoWay}"/>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="0" VerticalAlignment="Top" Margin="10,35,5,0" Height="25">
-                <Button x:Name="NewRequestButton" Content="New Request" Click="NewRequestButton_Click">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </StackPanel>
-
-            <ListBox Grid.Column="0" Margin="10,65,5,10" ItemsSource="{Binding SelectedCollection.Requests}" SelectedItem="{Binding SelectedCollection.SelectedRequest, Mode=TwoWay}">
+            <ListBox Grid.Column="0" Margin="10,35,5,10" ItemsSource="{Binding SelectedCollection.Requests}" SelectedItem="{Binding SelectedCollection.SelectedRequest, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -102,11 +88,48 @@
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="NewRequestMenuItem" Header="_New Request" Click="NewRequestMenuItem_Click"/>
+                        <MenuItem x:Name="DeleteRequestMenuItem" Header="_Delete Request" Click="DeleteRequestMenuItem_Click">
+                            <MenuItem.Style>
+                                <Style TargetType="MenuItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem x:Name="DuplicateRequestMenuItem" Header="Duplicate Request" Click="DuplicateRequestMenuItem_Click">
+                            <MenuItem.Style>
+                                <Style TargetType="MenuItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
             </ListBox>
 
             <GridSplitter ResizeDirection="Columns" Grid.Column="1" HorizontalAlignment="Stretch"/>
 
             <TabControl x:Name="RequestsTabControl" Grid.Column="2" Margin="5,10,10,10">
+                <TabControl.Style>
+                    <Style TargetType="TabControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabControl.Style>
                 <TabItem Header="Request">
                     <Grid DataContext="{Binding SelectedCollection.SelectedRequest}" Margin="10">
                         <Grid.RowDefinitions>
@@ -116,7 +139,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0" Margin="0,0,0,10">
-                            <TextBox Margin="0,0,65,0" Height="20" VerticalAlignment="Top" Text="{Binding Name}"/>
+                            <TextBox Margin="0,0,65,0" Height="20" VerticalAlignment="Top" Text="{Binding Name}" FontWeight="Bold"/>
                             <ComboBox Height="20" Width="70" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsEditable="True" Text="{Binding Method, Mode=TwoWay}">
                                 <ComboBoxItem IsSelected="True" Content="GET"/>
                                 <ComboBoxItem Content="POST"/>

@@ -210,13 +210,6 @@ namespace Postwoman
             }
         }
 
-        private void NewRequestButton_Click(object sender, RoutedEventArgs e)
-        {
-            var newRequest = new RequestViewModel { Name = "New request" };
-            collections.SelectedCollection.Requests.Add(newRequest);
-            collections.SelectedCollection.SelectedRequest = newRequest;
-        }
-
         private void SaveCollectionMenuItem_Click(object sender, RoutedEventArgs e)
         {
             FocusManager.SetFocusedElement(this, null);
@@ -283,6 +276,40 @@ namespace Postwoman
             }
         }
 
+        private void NewRequestMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var newRequest = new RequestViewModel { Name = "New request" };
+            collections.SelectedCollection.Requests.Add(newRequest);
+            collections.SelectedCollection.SelectedRequest = newRequest;
+        }
+
+        private void DeleteRequestMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you wish to delete the selected request?", "Delete Request", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                collections.SelectedCollection.Requests.Remove(collections.SelectedCollection.SelectedRequest);
+                collections.SelectedCollection.SelectedRequest = null;
+            }
+        }
+
+        private void DuplicateRequestMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedRequest = collections.SelectedCollection.SelectedRequest;
+            var newRequest = new RequestViewModel
+            {
+                Name = "Copy of " + selectedRequest.Name,
+                Method = selectedRequest.Method,
+                Url = selectedRequest.Url,
+                Headers = new ObservableCollection<RequestHeaderViewModel>(selectedRequest.Headers.Select(h => new RequestHeaderViewModel
+                {
+                    Name = h.Name,
+                    Value = h.Value
+                })),
+                Body = selectedRequest.Body
+            };
+            collections.SelectedCollection.Requests.Add(newRequest);
+            collections.SelectedCollection.SelectedRequest = newRequest;
+        }
     }
 
 }
