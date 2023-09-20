@@ -45,17 +45,6 @@ namespace Postwoman
             };
 
             collections = new CollectionsViewModel();
-            collections.Collections.Add(new CollectionViewModel
-            {
-                Name = "My Collection",
-                Requests = new ObservableCollection<RequestViewModel>()
-                {
-                    new RequestViewModel
-                    {
-                        Name = "New request"
-                    }
-                }
-            });
             DataContext = collections;
         }
 
@@ -223,9 +212,13 @@ namespace Postwoman
 
         private void NewCollectionButton_Click(object sender, RoutedEventArgs e)
         {
-            var newCollection = new CollectionViewModel { Name = "New collection" };
-            collections.Collections.Add(newCollection);
-            collections.SelectedCollection = newCollection;
+            var window = new NewCollectionWindow();
+            if (window.ShowDialog() == true)
+            {
+                var newCollection = new CollectionViewModel { Name = window.CollectionName };
+                collections.Collections.Add(newCollection);
+                collections.SelectedCollection = newCollection;
+            }
         }
 
         private void NewRequestButton_Click(object sender, RoutedEventArgs e)

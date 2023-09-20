@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Postwoman"
         mc:Ignorable="d"
-        Title="Collection Variables" Height="450" Width="800" WindowStartupLocation="CenterOwner">
+        Title="Collection Variables" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <DataGrid AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding Variables}">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
