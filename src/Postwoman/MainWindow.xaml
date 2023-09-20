@@ -32,6 +32,32 @@
                 <Separator/>
                 <MenuItem x:Name="ImportPostmanCollectionMenuItem" Header="Import _Postman Collection..." Click="ImportPostmanCollectionMenuItem_Click"/>
             </MenuItem>
+            <MenuItem Header="Collection">
+                <MenuItem x:Name="NewCollectionMenuItem" Header="New Collection..." Click="NewCollectionMenuItem_Click"/>
+                <MenuItem x:Name="RenameCollectionMenuItem" Header="Rename Collection..." Click="RenameCollectionMenuItem_Click">
+                    <MenuItem.Style>
+                        <Style TargetType="MenuItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+                <Separator/>
+                <MenuItem x:Name="EditVariablesMenuItem" Header="Edit Collection Variables..." Click="EditVariablesMenuItem_Click">
+                    <MenuItem.Style>
+                        <Style TargetType="MenuItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+            </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -40,24 +66,9 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="25">
-                <Button x:Name="NewCollectionButton" Content="New Collection" Margin="0,0,10,0" Click="NewCollectionButton_Click"/>
-                <Button x:Name="EditCollectionVariablesButton" Content="Variables" Click="EditCollectionVariablesButton_Click">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </StackPanel>
-            
-            <ComboBox Grid.Column="0" VerticalAlignment="Top" Margin="0,30,0,0" Height="20" ItemsSource="{Binding Collections}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedCollection, Mode=TwoWay}"/>
+            <ComboBox Grid.Column="0" VerticalAlignment="Top" Margin="10,10,5,0" Height="20" ItemsSource="{Binding Collections}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedCollection, Mode=TwoWay}"/>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="0" VerticalAlignment="Top" Margin="0,55,0,0" Height="25">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="0" VerticalAlignment="Top" Margin="10,35,5,0" Height="25">
                 <Button x:Name="NewRequestButton" Content="New Request" Click="NewRequestButton_Click">
                     <Button.Style>
                         <Style TargetType="Button">
@@ -71,7 +82,7 @@
                 </Button>
             </StackPanel>
 
-            <ListBox Grid.Column="0" Margin="0,85,0,0" ItemsSource="{Binding SelectedCollection.Requests}" SelectedItem="{Binding SelectedCollection.SelectedRequest, Mode=TwoWay}">
+            <ListBox Grid.Column="0" Margin="10,65,5,10" ItemsSource="{Binding SelectedCollection.Requests}" SelectedItem="{Binding SelectedCollection.SelectedRequest, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -84,7 +95,7 @@
 
             <GridSplitter ResizeDirection="Columns" Grid.Column="1" HorizontalAlignment="Stretch"/>
 
-            <TabControl x:Name="RequestsTabControl" Grid.Column="2">
+            <TabControl x:Name="RequestsTabControl" Grid.Column="2" Margin="5,10,10,10">
                 <TabItem Header="Request">
                     <Grid DataContext="{Binding SelectedCollection.SelectedRequest}">
                         <Grid.RowDefinitions>

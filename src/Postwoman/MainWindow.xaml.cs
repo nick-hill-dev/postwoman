@@ -210,27 +210,11 @@ namespace Postwoman
             }
         }
 
-        private void NewCollectionButton_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new NewCollectionWindow();
-            if (window.ShowDialog() == true)
-            {
-                var newCollection = new CollectionViewModel { Name = window.CollectionName };
-                collections.Collections.Add(newCollection);
-                collections.SelectedCollection = newCollection;
-            }
-        }
-
         private void NewRequestButton_Click(object sender, RoutedEventArgs e)
         {
             var newRequest = new RequestViewModel { Name = "New request" };
             collections.SelectedCollection.Requests.Add(newRequest);
             collections.SelectedCollection.SelectedRequest = newRequest;
-        }
-
-        private void EditCollectionVariablesButton_Click(object sender, RoutedEventArgs e)
-        {
-            new CollectionVariablesWindow(collections.SelectedCollection).ShowDialog();
         }
 
         private void SaveCollectionMenuItem_Click(object sender, RoutedEventArgs e)
@@ -266,6 +250,28 @@ namespace Postwoman
                 collections.Collections.Add(collection);
                 collections.SelectedCollection = collection;
             }
+        }
+
+        private void NewCollectionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new NewCollectionWindow();
+            if (window.ShowDialog() == true)
+            {
+                var newCollection = new CollectionViewModel { Name = window.CollectionName };
+                collections.Collections.Add(newCollection);
+                collections.SelectedCollection = newCollection;
+            }
+        }
+
+        private void RenameCollectionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new EditCollectionWindow(collections.SelectedCollection);
+            window.ShowDialog();
+        }
+
+        private void EditVariablesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            new CollectionVariablesWindow(collections.SelectedCollection).ShowDialog();
         }
 
     }

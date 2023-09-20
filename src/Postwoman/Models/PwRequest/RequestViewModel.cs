@@ -10,15 +10,67 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string Name { get; set; }
+    private string _name;
 
-    public string Method { get; set; } = "GET";
+    public string Name
+    {
+        get
+        {
+            return _name;
+        }
+        set
+        {
+            _name = value;
+            OnPropertyChanged();
+        }
+    }
 
-    public string Url { get; set; }
+    private string _method = "GET";
+
+    public string Method
+    {
+        get
+        {
+            return _method;
+        }
+        set
+        {
+            _method = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _url;
+
+    public string Url
+    {
+        get
+        {
+            return _url;
+        }
+        set
+        {
+            _url = value;
+            OnPropertyChanged();
+        }
+    }
 
     public ObservableCollection<RequestHeaderViewModel> Headers { get; set; } = new();
 
-    public string Body { get; set; }
+    private string _body;
+
+    public string Body
+    {
+        get
+        {
+            return _body;
+        }
+        set
+        {
+            _body = value;
+            OnPropertyChanged();
+        }
+    }
 
     private ResponseViewModel _latestResponse;
 

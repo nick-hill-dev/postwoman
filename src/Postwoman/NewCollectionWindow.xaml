@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Postwoman"
         mc:Ignorable="d"
-        Title="New Collection" Height="141" Width="439" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="New Collection" Height="141" Width="440" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Label Content="Collection Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
         <TextBox x:Name="NameTextBox" HorizontalAlignment="Stretch" Margin="10,41,10,37" Text="New collection"/>
