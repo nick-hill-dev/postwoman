@@ -45,7 +45,19 @@
                         </Style>
                     </MenuItem.Style>
                 </MenuItem>
-                <MenuItem x:Name="DeleteCollectionMenuItem" Header="_Delete Collection..." Click="DeleteCollectionMenuItem_Click">
+                <MenuItem x:Name="DeleteCollectionMenuItem" Header="_Delete Collection" Click="DeleteCollectionMenuItem_Click">
+                    <MenuItem.Style>
+                        <Style TargetType="MenuItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                    <Separator/>
+                </MenuItem>
+                <MenuItem x:Name="SortCollectionMenuItem" Header="_Sort" Click="SortCollectionMenuItem_Click">
                     <MenuItem.Style>
                         <Style TargetType="MenuItem">
                             <Style.Triggers>
@@ -79,11 +91,11 @@
 
             <ComboBox Grid.Column="0" VerticalAlignment="Top" Margin="10,10,5,0" Height="20" ItemsSource="{Binding Collections}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedCollection, Mode=TwoWay}"/>
 
-            <ListBox Grid.Column="0" Margin="10,35,5,10" ItemsSource="{Binding SelectedCollection.Requests}" SelectedItem="{Binding SelectedCollection.SelectedRequest, Mode=TwoWay}">
+            <ListBox Grid.Column="0" Margin="10,35,5,10" ItemsSource="{Binding SelectedCollection.Requests}" SelectedItem="{Binding SelectedCollection.SelectedRequest, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=5}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Method}" FontWeight="Bold" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding Method}" FontWeight="Bold" Margin="0,0,5,0" Width="50"/>
                             <TextBlock Text="{Binding Name}"/>
                         </StackPanel>
                     </DataTemplate>
@@ -161,7 +173,7 @@
                             </TabItem>
                             <TabItem Header="Body">
                                 <Grid>
-                                    <TextBox HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" Text="{Binding Body}"/>
+                                    <TextBox BorderThickness="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" Text="{Binding Body}"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>
@@ -176,7 +188,7 @@
                                 </DataGrid>
                             </TabItem>
                             <TabItem Header="Body">
-                                <TextBox HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" IsReadOnly="True" Text="{Binding Body}"/>
+                                <TextBox BorderThickness="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" IsReadOnly="True" Text="{Binding Body}"/>
                             </TabItem>
                         </TabControl>
                     </Grid>

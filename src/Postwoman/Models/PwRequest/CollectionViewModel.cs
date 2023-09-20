@@ -12,9 +12,35 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public string Name { get; set; }
 
-    public ObservableCollection<VariableViewModel> Variables { get; set; } = new();
+    private ObservableCollection<VariableViewModel> _variables = new();
 
-    public ObservableCollection<RequestViewModel> Requests { get; set; } = new();
+    public ObservableCollection<VariableViewModel> Variables
+    {
+        get
+        {
+            return _variables;
+        }
+        set
+        {
+            _variables = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private ObservableCollection<RequestViewModel> _requests = new();
+
+    public ObservableCollection<RequestViewModel> Requests
+    {
+        get
+        {
+            return _requests;
+        }
+        set
+        {
+            _requests = value;
+            OnPropertyChanged();
+        }
+    }
 
     private RequestViewModel _selectedRequest;
 

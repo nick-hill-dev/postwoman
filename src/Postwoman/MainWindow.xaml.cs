@@ -310,6 +310,14 @@ namespace Postwoman
             collections.SelectedCollection.Requests.Add(newRequest);
             collections.SelectedCollection.SelectedRequest = newRequest;
         }
+
+        private void SortCollectionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            collections.SelectedCollection.Requests = new ObservableCollection<RequestViewModel>(
+                collections.SelectedCollection.Requests.OrderBy(r => r.Name).ThenBy(r => r.Method)
+            );
+        }
+
     }
 
 }
