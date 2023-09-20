@@ -7,8 +7,10 @@ public class PostmanAuth
 
     public string Type { get; set; }
 
-    public List<PostmanAuthKeyVaule> Basic { get; set; } = new List<PostmanAuthKeyVaule>();
+    public List<PostmanAuthKeyValue> Basic { get; set; } = new();
 
-    public List<PostmanAuthKeyVaule> Bearer { get; set; } = new List<PostmanAuthKeyVaule>();
+    public List<PostmanAuthKeyValue> Bearer { get; set; } = new();
+
+    public List<PostmanAuthKeyValue> ApiKey { get; set; } = new();
 
 }

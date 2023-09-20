@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Postwoman.Importers;
 using Postwoman.Models.PostmanCollection;
 using Postwoman.Models.PwRequest;
 using System;
@@ -175,45 +176,9 @@ namespace Postwoman
             };
             if (dialog.ShowDialog() == true)
             {
-                var text = File.ReadAllText(dialog.FileName);
-                var postmanCollection = JsonConvert.DeserializeObject<ExportedPostmanCollections>(text, serializationSettings);
-                foreach (var collection in postmanCollection.Collections.OrderBy(c => c.Name))
+                foreach (var collection in PostmanImporter.Import(dialog.FileName))
                 {
-                    var newCollection = new CollectionViewModel
-                    {
-                        Name = collection.Name
-                    };
-                    foreach (var variable in collection.Variables)
-                    {
-                        newCollection.Variables.Add(new VariableViewModel
-                        {
-                            Name = variable.Key,
-                            Value = variable.Value
-                        });
-                    }
-                    foreach (var request in collection.Requests)
-                    {
-                        var newRequest = new RequestViewModel
-                        {
-                            Method = request.Method,
-                            Name = request.Name,
-                            Url = request.Url
-                        };
-                        foreach (var header in request.HeaderData ?? new List<PostmanHeaderDataItem>())
-                        {
-                            newRequest.Headers.Add(new RequestHeaderViewModel
-                            {
-                                Name = header.Key,
-                                Value = header.Value
-                            });
-                        }
-                        if (!string.IsNullOrEmpty(request.RawModeData))
-                        {
-                            newRequest.Body = request.RawModeData;
-                        }
-                        newCollection.Requests.Add(newRequest);
-                    }
-                    collections.Collections.Add(newCollection);
+                    collections.Collections.Add(collection);
                 }
                 collections.SelectedCollection = null;
             }
