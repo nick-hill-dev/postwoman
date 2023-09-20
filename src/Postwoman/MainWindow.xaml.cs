@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -88,8 +89,12 @@ namespace Postwoman
 
                 var client = new HttpClient();
                 var response = await client.SendAsync(request);
-                var responseText = await response.Content.ReadAsStringAsync();
 
+                var responseText = await response.Content.ReadAsStringAsync();
+                if (response.Content.Headers.ContentType.MediaType == "application/json")
+                {
+                    responseText = JsonConvert.SerializeObject(JsonConvert.DeserializeObject(responseText), Formatting.Indented);
+                }
                 selectedRequest.LatestResponse = new ResponseViewModel
                 {
                     Body = responseText,
