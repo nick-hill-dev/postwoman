@@ -27,6 +27,21 @@ public class CollectionViewModel : INotifyPropertyChanged
         }
     }
 
+    private ObservableCollection<RequestHeaderViewModel> _headers = new();
+
+    public ObservableCollection<RequestHeaderViewModel> Headers
+    {
+        get
+        {
+            return _headers;
+        }
+        set
+        {
+            _headers = value;
+            OnPropertyChanged();
+        }
+    }
+
     private ObservableCollection<RequestViewModel> _requests = new();
 
     public ObservableCollection<RequestViewModel> Requests

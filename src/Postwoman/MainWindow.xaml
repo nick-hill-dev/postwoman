@@ -80,6 +80,17 @@
                         </Style>
                     </MenuItem.Style>
                 </MenuItem>
+                <MenuItem x:Name="EditHeadersMenuItem" Header="Edit Collection Headers..." Click="EditHeadersMenuItem_Click">
+                    <MenuItem.Style>
+                        <Style TargetType="MenuItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">

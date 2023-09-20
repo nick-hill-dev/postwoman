@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
@@ -57,6 +58,14 @@ namespace Postwoman
                 var requestMethod = GetRequestMethod(selectedRequest.Method);
                 var fullUrl = VariableReplacer.Replace(selectedRequest.Url, selectedCollection.Variables);
                 var request = new HttpRequestMessage(requestMethod, fullUrl);
+
+                foreach (var header in selectedCollection.Headers)
+                {
+                    request.Headers.TryAddWithoutValidation(
+                        header.Name,
+                        VariableReplacer.Replace(header.Value, selectedCollection.Variables)
+                    );
+                }
 
                 foreach (var header in selectedRequest.Headers)
                 {
@@ -265,6 +274,11 @@ namespace Postwoman
         private void EditVariablesMenuItem_Click(object sender, RoutedEventArgs e)
         {
             new CollectionVariablesWindow(collections.SelectedCollection).ShowDialog();
+        }
+
+        private void EditHeadersMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            new CollectionHeadersWindow(collections.SelectedCollection).ShowDialog();
         }
 
         private void DeleteCollectionMenuItem_Click(object sender, RoutedEventArgs e)
