@@ -274,6 +274,15 @@ namespace Postwoman
             new CollectionVariablesWindow(collections.SelectedCollection).ShowDialog();
         }
 
+        private void DeleteCollectionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you wish to delete the selected collection?", "Delete Collection", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                collections.Collections.Remove(collections.SelectedCollection);
+                collections.SelectedCollection = collections.Collections.FirstOrDefault();
+            }
+        }
+
     }
 
 }

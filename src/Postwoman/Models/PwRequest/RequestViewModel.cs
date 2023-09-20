@@ -10,7 +10,7 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private string _name;
+    private string _name = string.Empty;
 
     public string Name
     {
@@ -40,7 +40,7 @@ public class RequestViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _url;
+    private string _url = string.Empty;
 
     public string Url
     {
@@ -57,7 +57,7 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public ObservableCollection<RequestHeaderViewModel> Headers { get; set; } = new();
 
-    private string _body;
+    private string _body = string.Empty;
 
     public string Body
     {
