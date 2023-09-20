@@ -3,9 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:Postwoman.WpfValueConverters"
         xmlns:local="clr-namespace:Postwoman"
         mc:Ignorable="d"
         Title="Postwoman" Height="600" Width="1024" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <converters:RequestMethodColorSelector x:Key="RequestMethodColorSelector"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -100,46 +104,47 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
-            <ComboBox Grid.Column="0" VerticalAlignment="Top" Margin="10,10,5,0" Height="20" ItemsSource="{Binding Collections}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedCollection, Mode=TwoWay}"/>
-
-            <ListBox Grid.Column="0" Margin="10,35,5,10" ItemsSource="{Binding SelectedCollection.Requests}" SelectedItem="{Binding SelectedCollection.SelectedRequest, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=5}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Method}" FontWeight="Bold" Margin="0,0,5,0" Width="50"/>
-                            <TextBlock Text="{Binding Name}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem x:Name="NewRequestMenuItem" Header="_New Request" Click="NewRequestMenuItem_Click"/>
-                        <MenuItem x:Name="DeleteRequestMenuItem" Header="_Delete Request" Click="DeleteRequestMenuItem_Click">
-                            <MenuItem.Style>
-                                <Style TargetType="MenuItem">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </MenuItem.Style>
-                        </MenuItem>
-                        <Separator/>
-                        <MenuItem x:Name="DuplicateRequestMenuItem" Header="Duplicate Request" Click="DuplicateRequestMenuItem_Click">
-                            <MenuItem.Style>
-                                <Style TargetType="MenuItem">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </MenuItem.Style>
-                        </MenuItem>
-                    </ContextMenu>
-                </ListBox.ContextMenu>
-            </ListBox>
+            <DockPanel Grid.Column="0" Margin="10,10,5,10" LastChildFill="True">
+                <ComboBox DockPanel.Dock="Top" VerticalAlignment="Top" Height="Auto" FontSize="16" FontWeight="Bold" ItemsSource="{Binding Collections}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedCollection, Mode=TwoWay}"/>
+                <ListBox Margin="0,5,0,0" VerticalAlignment="Stretch" ItemsSource="{Binding SelectedCollection.Requests}" SelectedItem="{Binding SelectedCollection.SelectedRequest, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=5}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Method}" FontWeight="Bold" Margin="0,0,5,0" Width="50" Foreground="{Binding Method, Converter={StaticResource RequestMethodColorSelector}}"/>
+                                <TextBlock Text="{Binding Name}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="NewRequestMenuItem" Header="_New Request" Click="NewRequestMenuItem_Click"/>
+                            <MenuItem x:Name="DeleteRequestMenuItem" Header="_Delete Request" Click="DeleteRequestMenuItem_Click">
+                                <MenuItem.Style>
+                                    <Style TargetType="MenuItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </MenuItem.Style>
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem x:Name="DuplicateRequestMenuItem" Header="Duplicate Request" Click="DuplicateRequestMenuItem_Click">
+                                <MenuItem.Style>
+                                    <Style TargetType="MenuItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </MenuItem.Style>
+                            </MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+            </DockPanel>
 
             <GridSplitter ResizeDirection="Columns" Grid.Column="1" HorizontalAlignment="Stretch"/>
 
@@ -177,7 +182,7 @@
                             <TabItem Header="Headers">
                                 <DataGrid ItemsSource="{Binding Headers}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
+                                        <DataGridTextColumn Header="Name" FontFamily="Consolas" Width="1*" Binding="{Binding Name}"/>
                                         <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
@@ -193,7 +198,7 @@
                             <TabItem Header="Headers">
                                 <DataGrid HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Headers}">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
+                                        <DataGridTextColumn Header="Name" FontFamily="Consolas" Width="1*" Binding="{Binding Name}"/>
                                         <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
