@@ -55,6 +55,21 @@ public class RequestViewModel : INotifyPropertyChanged
         }
     }
 
+    private RequestAuthorization _authorization = new();
+
+    public RequestAuthorization Authorization
+    {
+        get
+        {
+            return _authorization;
+        }
+        set
+        {
+            _authorization = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ObservableCollection<RequestHeaderViewModel> Headers { get; set; } = new();
 
     private string _body = string.Empty;

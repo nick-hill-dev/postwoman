@@ -2,16 +2,16 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Postwoman.Importers;
-using Postwoman.Models.PostmanCollection;
 using Postwoman.Models.PwRequest;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Mime;
+using System.Net.Http.Headers;
+using System.Reflection.PortableExecutable;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -75,6 +75,27 @@ namespace Postwoman
                         header.Name,
                         VariableReplacer.Replace(header.Value, selectedCollection.Variables)
                     );
+                }
+
+                switch (selectedRequest.Authorization.Type)
+                {
+                    case "Basic":
+                        var userName = VariableReplacer.Replace(selectedRequest.Authorization.BasicUserName, selectedCollection.Variables);
+                        var password = VariableReplacer.Replace(selectedRequest.Authorization.BasicPassword, selectedCollection.Variables);
+                        var authenticationString = $"{userName}:{password}";
+                        var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+                        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
+                        break;
+
+                    case "ApiKey":
+                        var apiKey = VariableReplacer.Replace(selectedRequest.Authorization.ApiKeyHeaderName, selectedCollection.Variables);
+                        request.Headers.TryAddWithoutValidation(apiKey, selectedRequest.Authorization.ApiKeyValue);
+                        break;
+
+                    case "Bearer":
+                        var bearerToken = VariableReplacer.Replace(selectedRequest.Authorization.BearerToken, selectedCollection.Variables);
+                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+                        break;
                 }
 
                 if (!string.IsNullOrEmpty(selectedRequest.Body))
