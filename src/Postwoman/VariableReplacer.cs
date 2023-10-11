@@ -8,7 +8,7 @@ namespace Postwoman;
 public static class VariableReplacer
 {
 
-    public static string Replace(string value, ICollection<VariableViewModel> variables)
+    public static string Replace(string value, Func<string, string> replacer)
     {
         var keepGoing = true;
         while (keepGoing)
@@ -21,14 +21,24 @@ public static class VariableReplacer
                 if (i2 > i1)
                 {
                     var variableName = value.Substring(i1 + 2, i2 - i1 - 2);
-                    var variableValue = variables.FirstOrDefault(v => v.Name == variableName)
-                        ?? throw new Exception("Variable not defined: " + variableName);
-                    value = value.Replace("{{" + variableName + "}}", variableValue.Value);
+                    var variableValue = replacer(variableName);
+                    value = value.Replace("{{" + variableName + "}}", variableValue);
                     keepGoing = true;
                 }
             }
         }
         return value;
+    }
+
+    public static string Replace(string value, ICollection<VariableViewModel> variables)
+    {
+        string replacer(string variableName)
+        {
+            var variableValue = variables.FirstOrDefault(v => v.Name == variableName)
+                ?? throw new Exception("Variable not defined: " + variableName);
+            return variableValue.Value;
+        }
+        return Replace(value, replacer);
     }
 
 }

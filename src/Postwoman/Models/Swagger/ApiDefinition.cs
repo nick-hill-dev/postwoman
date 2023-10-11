@@ -12,7 +12,7 @@ public class ApiDefinition
 
     public ApiInfo Info { get; set; }
 
-    public List<ApiServer> Servers { get; set; } = new();
+    public List<ApiServer> Servers { get; set; }
 
     public ApiComponents Components { get; set; }
 

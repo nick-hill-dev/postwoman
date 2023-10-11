@@ -6,8 +6,8 @@ namespace Postwoman.Models.Swagger;
 public class ApiServer
 {
 
-    public string Url { get; set; }
-
     public string Description { get; set; }
+
+    public string Url { get; set; }
 
 }

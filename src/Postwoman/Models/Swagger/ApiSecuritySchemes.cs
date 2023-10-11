@@ -2,7 +2,7 @@
 
 namespace Postwoman.Models.Swagger;
 
-public class ApiSecuritySchemes : Dictionary<string, ApiSecuritySchemes>
+public class ApiSecuritySchemes : Dictionary<string, ApiSecurityScheme>
 {
 
 }
