@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Postwoman"
         mc:Ignorable="d"
         Title="Collection Headers" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <DataGrid AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding Headers}">
+    <DataGrid AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding Headers}" CanUserAddRows="True">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
             <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
