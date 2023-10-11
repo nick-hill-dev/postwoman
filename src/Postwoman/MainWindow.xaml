@@ -73,6 +73,18 @@
                     </MenuItem.Style>
                 </MenuItem>
                 <Separator/>
+                <MenuItem x:Name="EditCollectionConfigurationMenuItem" Header="Collection _Configuration..." Click="EditCollectionConfigurationMenuItem_Click">
+                    <MenuItem.Style>
+                        <Style TargetType="MenuItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+                <Separator/>
                 <MenuItem x:Name="EditVariablesMenuItem" Header="Edit Collection Variables..." Click="EditVariablesMenuItem_Click">
                     <MenuItem.Style>
                         <Style TargetType="MenuItem">

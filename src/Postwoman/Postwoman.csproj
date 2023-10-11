@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="CollectionConfigurationWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GeneratedCodeWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

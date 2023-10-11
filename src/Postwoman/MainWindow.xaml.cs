@@ -338,6 +338,12 @@ namespace Postwoman
             window.ShowDialog();
         }
 
+        private void EditCollectionConfigurationMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new CollectionConfigurationWindow(collections.SelectedCollection);
+            window.ShowDialog();
+        }
+
     }
 
 }
