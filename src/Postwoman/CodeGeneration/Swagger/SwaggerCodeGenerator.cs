@@ -130,7 +130,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
             };
         }
 
-        if (!string.IsNullOrEmpty(request.LatestResponse.Body))
+        if (!string.IsNullOrEmpty(request?.LatestResponse?.Body))
         {
             operation.Responses = new ApiOperationResponses
             {
