@@ -56,7 +56,12 @@ namespace Postwoman
                 var selectedCollection = collections.SelectedCollection;
                 var selectedRequest = selectedCollection.SelectedRequest;
                 var requestMethod = GetRequestMethod(selectedRequest.Method);
-                var fullUrl = VariableReplacer.Replace(selectedRequest.Url, selectedCollection.Variables);
+
+                var url = selectedCollection.Servers?.Count == 0 || selectedRequest.Url.StartsWith("http://") || selectedRequest.Url.StartsWith("https://")
+                    ? selectedRequest.Url
+                    : selectedCollection.Servers.First().BaseUrl + (selectedRequest.Url.StartsWith("/") ? string.Empty : "/") + selectedRequest.Url;
+
+                var fullUrl = VariableReplacer.Replace(url, selectedCollection.Variables);
                 var request = new HttpRequestMessage(requestMethod, fullUrl);
 
                 foreach (var header in selectedCollection.Headers)
