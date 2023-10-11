@@ -57,11 +57,8 @@ namespace Postwoman
                 var selectedRequest = selectedCollection.SelectedRequest;
                 var requestMethod = GetRequestMethod(selectedRequest.Method);
 
-                var url = selectedCollection.Servers?.Count == 0 || selectedRequest.Url.StartsWith("http://") || selectedRequest.Url.StartsWith("https://")
-                    ? selectedRequest.Url
-                    : selectedCollection.Servers.First().BaseUrl + (selectedRequest.Url.StartsWith("/") ? string.Empty : "/") + selectedRequest.Url;
+                var fullUrl = UrlTools.GetFullUrl(selectedCollection, selectedRequest);
 
-                var fullUrl = VariableReplacer.Replace(url, selectedCollection.Variables);
                 var request = new HttpRequestMessage(requestMethod, fullUrl);
 
                 foreach (var header in selectedCollection.Headers)
@@ -122,6 +119,7 @@ namespace Postwoman
                 selectedRequest.LatestResponse = new ResponseViewModel
                 {
                     Body = responseText,
+                    StatusCode = (int)response.StatusCode,
                     Headers = new ObservableCollection<ResponseHeaderViewModel>(response.Content.Headers.Select(h => new ResponseHeaderViewModel
                     {
                         Name = h.Key,

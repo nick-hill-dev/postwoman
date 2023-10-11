@@ -5,6 +5,7 @@ using Postwoman.Models.Swagger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace Postwoman.CodeGeneration.Swagger;
 
@@ -26,7 +27,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
 
         AddServers(collection, model);
         AddSecurity(request, model);
-        AddOperation(request, model);
+        AddOperation(collection, request, model);
 
         var contractResolver = new DefaultContractResolver
         {
@@ -99,7 +100,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
         }
     }
 
-    private static void AddOperation(RequestViewModel request, ApiDefinition model)
+    private static void AddOperation(CollectionViewModel collection, RequestViewModel request, ApiDefinition model)
     {
         var operation = new ApiOperation
         {
@@ -109,6 +110,49 @@ public class SwaggerCodeGenerator : ICodeGenerator
         };
 
         AddOperationSecurity(request, operation);
+        AddOperationParameters(collection, request, operation);
+
+        if (!string.IsNullOrEmpty(request.Body))
+        {
+            operation.RequestBody = new ApiOperationRequestBody
+            {
+                Required = true,
+                Content = new ApiContent
+                {
+                    {
+                        "application/json",
+                        new ApiContentDetails
+                        {
+                            Example = JsonConvert.DeserializeObject(request.Body)
+                        }
+                    }
+                }
+            };
+        }
+
+        if (!string.IsNullOrEmpty(request.LatestResponse.Body))
+        {
+            operation.Responses = new ApiOperationResponses
+            {
+                {
+                    request.LatestResponse.StatusCode,
+                    new ApiOperationResponse
+                    {
+                         Description = request.LatestResponse.StatusCode.ToString().StartsWith("2") ? "Successful response." : $"Response for {request.LatestResponse.StatusCode}.",
+                         Content = new ApiContent
+                         {
+                             {
+                                 "application/json",
+                                 new ApiContentDetails
+                                 {
+                                     Example = JsonConvert.DeserializeObject(request.LatestResponse.Body)
+                                 }
+                             }
+                         }
+                    }
+                }
+            };
+        }
 
         static string replacer(string variableName)
         {
@@ -116,7 +160,11 @@ public class SwaggerCodeGenerator : ICodeGenerator
         }
         var url = VariableReplacer.Replace(request.Url, replacer);
 
-        model.Paths[url] = new ApiPath
+        var relativeUrl = request.Url.StartsWith("http://") || request.Url.StartsWith("https://")
+            ? new Uri(url).AbsolutePath
+            : url.StartsWith("/") ? url : "/" + url;
+
+        model.Paths[relativeUrl] = new ApiPath
         {
             { request.Method.ToLower(), operation }
         };
@@ -157,4 +205,57 @@ public class SwaggerCodeGenerator : ICodeGenerator
             };
         }
     }
+
+    private static void AddOperationParameters(CollectionViewModel collection, RequestViewModel request, ApiOperation operation)
+    {
+        var fullUrl = new Uri(UrlTools.GetFullUrl(collection, request));
+        var fragments = UrlTools.GetFragments(request.Url);
+        var query = HttpUtility.ParseQueryString(fullUrl.Query);
+        if (fragments.Length > 0 || query.Count > 0)
+        {
+            operation.Parameters = new List<ApiOperationParameter>();
+            foreach (var fragment in fragments)
+            {
+                operation.Parameters.Add(new ApiOperationParameter
+                {
+                    Name = fragment,
+                    In = "path",
+                    Required = true,
+                    Schema = new
+                    {
+                        type = GuessType(collection.Variables.First(v => v.Name == fragment).Value)
+                    },
+                    Description = $"The {fragment} specified in the URL."
+                });
+            }
+            foreach (var queryKey in query.AllKeys)
+            {
+                operation.Parameters.Add(new ApiOperationParameter
+                {
+                    Name = queryKey,
+                    In = "query",
+                    Required = true,
+                    Schema = new
+                    {
+                        type = GuessType(query[queryKey])
+                    },
+                    Description = $"The {queryKey} specified in the query string."
+                });
+            }
+        }
+    }
+
+    private static string GuessType(string value)
+    {
+        if (double.TryParse(value, out _))
+        {
+            return "number";
+        }
+        if (bool.TryParse(value, out _))
+        {
+            return "boolean";
+        }
+        return "string";
+    }
+
 }

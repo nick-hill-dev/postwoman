@@ -13,9 +13,9 @@ public class ApiOperation
 
     public string Description { get; set; }
 
-    public List<ApiOperationSecurity> Security { get; set; } = new();
+    public List<ApiOperationSecurity> Security { get; set; }
 
-    public List<ApiOperationParameter> Parameters { get; set; } = new();
+    public List<ApiOperationParameter> Parameters { get; set; }
 
     public ApiOperationRequestBody RequestBody { get; set; }
 
