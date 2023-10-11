@@ -1,17 +1,15 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Postwoman.CodeGeneration.Swagger;
 using Postwoman.Importers;
 using Postwoman.Models.PwRequest;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection.PortableExecutable;
-using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -305,6 +303,15 @@ namespace Postwoman
                 Name = "Copy of " + selectedRequest.Name,
                 Method = selectedRequest.Method,
                 Url = selectedRequest.Url,
+                Authorization = selectedRequest.Authorization == null ? null : new RequestAuthorization
+                {
+                    Type = selectedRequest.Authorization.Type,
+                    BasicUserName = selectedRequest.Authorization.BasicUserName,
+                    BasicPassword = selectedRequest.Authorization.BasicPassword,
+                    ApiKeyHeaderName = selectedRequest.Authorization.ApiKeyHeaderName,
+                    ApiKeyValue = selectedRequest.Authorization.ApiKeyValue,
+                    BearerToken = selectedRequest.Authorization.BearerToken
+                },
                 Headers = new ObservableCollection<RequestHeaderViewModel>(selectedRequest.Headers.Select(h => new RequestHeaderViewModel
                 {
                     Name = h.Name,
@@ -321,6 +328,14 @@ namespace Postwoman
             collections.SelectedCollection.Requests = new ObservableCollection<RequestViewModel>(
                 collections.SelectedCollection.Requests.OrderBy(r => r.Name).ThenBy(r => r.Method)
             );
+        }
+
+        private void GenerateSwaggerDefinitionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var generator = new SwaggerCodeGenerator();
+            var code = generator.Generate(collections.SelectedCollection, collections.SelectedCollection.SelectedRequest);
+            var window = new GeneratedCodeWindow(code);
+            window.ShowDialog();
         }
 
     }

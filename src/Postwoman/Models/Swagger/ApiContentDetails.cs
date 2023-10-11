@@ -6,7 +6,7 @@ namespace Postwoman.Models.Swagger;
 public class ApiContentDetails
 {
 
-    public Schema Schema { get; set; }
+    public object Schema { get; set; }
 
     public object Example { get; set; }
 

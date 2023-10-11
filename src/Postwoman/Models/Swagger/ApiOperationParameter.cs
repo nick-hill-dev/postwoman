@@ -12,7 +12,7 @@ public class ApiOperationParameter
 
     public bool Required { get; set; }
 
-    public Schema Schema { get; set; }
+    public object Schema { get; set; }
 
     public string Description { get; set; }
 

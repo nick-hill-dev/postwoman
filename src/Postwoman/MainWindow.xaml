@@ -96,6 +96,19 @@
                     </MenuItem.Style>
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="_Swagger">
+                <MenuItem x:Name="GenerateSwaggerDefinitionMenuItem" Header="Generate Definition..." Click="GenerateSwaggerDefinitionMenuItem_Click">
+                    <MenuItem.Style>
+                        <Style TargetType="MenuItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+            </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
