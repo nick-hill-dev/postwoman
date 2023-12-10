@@ -211,9 +211,23 @@ public class SwaggerCodeGenerator : ICodeGenerator
         var fullUrl = new Uri(UrlTools.GetFullUrl(collection, request));
         var fragments = UrlTools.GetFragments(request.Url);
         var query = HttpUtility.ParseQueryString(fullUrl.Query);
-        if (fragments.Length > 0 || query.Count > 0)
+        if (fragments.Length > 0 || query.Count > 0 || collection.Headers.Count > 0)
         {
             operation.Parameters = new List<ApiOperationParameter>();
+            foreach (var header in collection.Headers)
+            {
+                operation.Parameters.Add(new ApiOperationParameter
+                {
+                    Name = header.Name,
+                    In = "header",
+                    Required = true,
+                    Schema = new
+                    {
+                        type = GuessType(header.Value)
+                    },
+                    Description = $"The {header.Name} specified in the request header."
+                });
+            }
             foreach (var fragment in fragments)
             {
                 operation.Parameters.Add(new ApiOperationParameter
