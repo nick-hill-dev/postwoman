@@ -92,6 +92,15 @@
                 </ScrollViewer>
 
             </TabItem>
+            <TabItem Header="Query">
+                <DataGrid ItemsSource="{Binding Query}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="Enabled?" Width="Auto" Binding="{Binding IsChecked}"/>
+                        <DataGridTextColumn Header="Name" FontFamily="Consolas" Width="1*" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
             <TabItem Header="Headers">
                 <DataGrid ItemsSource="{Binding Headers}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False">
                     <DataGrid.Columns>

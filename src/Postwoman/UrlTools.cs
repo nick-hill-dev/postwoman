@@ -12,6 +12,17 @@ public class UrlTools
             ? request.Url
             : collection.Servers.First().BaseUrl + (request.Url.StartsWith("/") ? string.Empty : "/") + request.Url;
 
+
+        var parameters = request.Query.Where(q => q.IsChecked).ToArray();
+        if (parameters.Length > 0)
+        {
+            var i = 0;
+            foreach (var parameter in parameters)
+            {
+                url += (i++ == 0 ? "?" : "&");
+                url += $"{parameter.Name}={parameter.Value}";
+            }
+        }
         return VariableReplacer.Replace(url, collection.Variables);
     }
 

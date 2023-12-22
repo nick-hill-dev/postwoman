@@ -73,6 +73,8 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public ObservableCollection<RequestHeaderViewModel> Headers { get; set; } = new();
 
+    public ObservableCollection<RequestParameterViewModel> Query { get; set; } = new();
+
     private string _body = string.Empty;
 
     public string Body
@@ -127,6 +129,12 @@ public class RequestViewModel : INotifyPropertyChanged
             },
             Headers = new ObservableCollection<RequestHeaderViewModel>(Headers.Select(h => new RequestHeaderViewModel
             {
+                Name = h.Name,
+                Value = h.Value
+            })),
+            Query = new ObservableCollection<RequestParameterViewModel>(Query.Select(h => new RequestParameterViewModel
+            {
+                IsChecked = h.IsChecked,
                 Name = h.Name,
                 Value = h.Value
             })),
