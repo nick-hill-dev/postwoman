@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Postwoman.Models.PwRequest;
@@ -106,6 +107,31 @@ public class RequestViewModel : INotifyPropertyChanged
     protected void OnPropertyChanged([CallerMemberName] string name = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+
+    public RequestViewModel Clone(string newName)
+    {
+        return new RequestViewModel
+        {
+            Name = newName,
+            Method = Method,
+            Url = Url,
+            Authorization = Authorization == null ? null : new RequestAuthorization
+            {
+                Type = Authorization.Type,
+                BasicUserName = Authorization.BasicUserName,
+                BasicPassword = Authorization.BasicPassword,
+                ApiKeyHeaderName = Authorization.ApiKeyHeaderName,
+                ApiKeyValue = Authorization.ApiKeyValue,
+                BearerToken = Authorization.BearerToken
+            },
+            Headers = new ObservableCollection<RequestHeaderViewModel>(Headers.Select(h => new RequestHeaderViewModel
+            {
+                Name = h.Name,
+                Value = h.Value
+            })),
+            Body = Body
+        };
     }
 
 }

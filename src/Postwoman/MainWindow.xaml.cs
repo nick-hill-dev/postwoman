@@ -1,16 +1,11 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Postwoman.CodeGeneration.Swagger;
 using Postwoman.Importers;
 using Postwoman.Models.PwRequest;
-using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -47,123 +42,6 @@ namespace Postwoman
 
             collections = new CollectionsViewModel();
             DataContext = collections;
-        }
-
-        private async void SendRequestButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var selectedCollection = collections.SelectedCollection;
-                var selectedRequest = selectedCollection.SelectedRequest;
-                var requestMethod = GetRequestMethod(selectedRequest.Method);
-
-                var fullUrl = UrlTools.GetFullUrl(selectedCollection, selectedRequest);
-
-                var request = new HttpRequestMessage(requestMethod, fullUrl);
-
-                foreach (var header in selectedCollection.Headers)
-                {
-                    request.Headers.TryAddWithoutValidation(
-                        header.Name,
-                        VariableReplacer.Replace(header.Value, selectedCollection.Variables)
-                    );
-                }
-
-                foreach (var header in selectedRequest.Headers)
-                {
-                    request.Headers.TryAddWithoutValidation(
-                        header.Name,
-                        VariableReplacer.Replace(header.Value, selectedCollection.Variables)
-                    );
-                }
-
-                switch (selectedRequest.Authorization.Type)
-                {
-                    case "Basic":
-                        var userName = VariableReplacer.Replace(selectedRequest.Authorization.BasicUserName, selectedCollection.Variables);
-                        var password = VariableReplacer.Replace(selectedRequest.Authorization.BasicPassword, selectedCollection.Variables);
-                        var authenticationString = $"{userName}:{password}";
-                        var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
-                        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
-                        break;
-
-                    case "ApiKey":
-                        var apiKey = VariableReplacer.Replace(selectedRequest.Authorization.ApiKeyHeaderName, selectedCollection.Variables);
-                        request.Headers.TryAddWithoutValidation(apiKey, selectedRequest.Authorization.ApiKeyValue);
-                        break;
-
-                    case "Bearer":
-                        var bearerToken = VariableReplacer.Replace(selectedRequest.Authorization.BearerToken, selectedCollection.Variables);
-                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-                        break;
-                }
-
-                if (!string.IsNullOrEmpty(selectedRequest.Body))
-                {
-                    var mediaType = "application/json";
-                    request.Content = new StringContent(
-                        VariableReplacer.Replace(selectedRequest.Body, selectedCollection.Variables),
-                        Encoding.UTF8,
-                        mediaType
-                    );
-                }
-
-                var client = new HttpClient();
-                var response = await client.SendAsync(request);
-
-                var responseText = await response.Content.ReadAsStringAsync();
-                if (response.Content.Headers.ContentType.MediaType == "application/json")
-                {
-                    try
-                    {
-                        responseText = JsonConvert.SerializeObject(JsonConvert.DeserializeObject(responseText), Formatting.Indented);
-                    }
-                    catch
-                    {
-                    }
-                }
-                selectedRequest.LatestResponse = new ResponseViewModel
-                {
-                    Body = responseText,
-                    StatusCode = (int)response.StatusCode,
-                    Headers = new ObservableCollection<ResponseHeaderViewModel>(response.Content.Headers.Select(h => new ResponseHeaderViewModel
-                    {
-                        Name = h.Key,
-                        Value = string.Join(", ", h.Value)
-                    }))
-                };
-
-                StatusTextBlock.Text = $"HTTP {selectedRequest.Method} {fullUrl} ({response.StatusCode})";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private static HttpMethod GetRequestMethod(string method)
-        {
-            var requestMethod = HttpMethod.Get;
-            switch (method)
-            {
-                case "POST":
-                    requestMethod = HttpMethod.Post;
-                    break;
-
-                case "PUT":
-                    requestMethod = HttpMethod.Put;
-                    break;
-
-                case "DELETE":
-                    requestMethod = HttpMethod.Delete;
-                    break;
-
-                case "OPTIONS":
-                    requestMethod = HttpMethod.Options;
-                    break;
-            }
-
-            return requestMethod;
         }
 
         private void ImportRequestMenuItem_Click(object sender, RoutedEventArgs e)
@@ -307,29 +185,23 @@ namespace Postwoman
         private void DuplicateRequestMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var selectedRequest = collections.SelectedCollection.SelectedRequest;
-            var newRequest = new RequestViewModel
-            {
-                Name = "Copy of " + selectedRequest.Name,
-                Method = selectedRequest.Method,
-                Url = selectedRequest.Url,
-                Authorization = selectedRequest.Authorization == null ? null : new RequestAuthorization
-                {
-                    Type = selectedRequest.Authorization.Type,
-                    BasicUserName = selectedRequest.Authorization.BasicUserName,
-                    BasicPassword = selectedRequest.Authorization.BasicPassword,
-                    ApiKeyHeaderName = selectedRequest.Authorization.ApiKeyHeaderName,
-                    ApiKeyValue = selectedRequest.Authorization.ApiKeyValue,
-                    BearerToken = selectedRequest.Authorization.BearerToken
-                },
-                Headers = new ObservableCollection<RequestHeaderViewModel>(selectedRequest.Headers.Select(h => new RequestHeaderViewModel
-                {
-                    Name = h.Name,
-                    Value = h.Value
-                })),
-                Body = selectedRequest.Body
-            };
+            var newRequest = selectedRequest.Clone("Copy of " + selectedRequest.Name);
             collections.SelectedCollection.Requests.Add(newRequest);
             collections.SelectedCollection.SelectedRequest = newRequest;
+        }
+
+        private void ExperimentWithRequestMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var dataContext = DataContext as CollectionsViewModel;
+            var newDataContext = new CollectionsViewModel
+            {
+                Collections = dataContext.Collections,
+                SelectedCollection = dataContext.SelectedCollection
+            };
+            var selectedRequest = newDataContext.SelectedCollection.SelectedRequest;
+            newDataContext.SelectedCollection.SelectedRequest = selectedRequest.Clone(selectedRequest.Name); // TODO: Fix cloned request being selected after window closed
+            var window = new RequestResponseWindow(newDataContext);
+            window.ShowDialog();
         }
 
         private void SortCollectionMenuItem_Click(object sender, RoutedEventArgs e)

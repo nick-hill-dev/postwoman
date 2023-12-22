@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:Postwoman.WpfValueConverters"
-        xmlns:local="clr-namespace:Postwoman"
+        xmlns:local="clr-namespace:Postwoman" xmlns:controls="clr-namespace:Postwoman.Controls"
         mc:Ignorable="d"
         Title="Postwoman" Height="600" Width="1024" WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -177,6 +177,18 @@
                                     </Style>
                                 </MenuItem.Style>
                             </MenuItem>
+                            <Separator/>
+                            <MenuItem x:Name="ExperimentWithRequestMenuItem" Header="Playground..." Click="ExperimentWithRequestMenuItem_Click">
+                                <MenuItem.Style>
+                                    <Style TargetType="MenuItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </MenuItem.Style>
+                            </MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
@@ -195,124 +207,7 @@
                     </Style>
                 </TabControl.Style>
                 <TabItem Header="Request">
-                    <Grid DataContext="{Binding SelectedCollection.SelectedRequest}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="55"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="5"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Margin="10,10,10,0">
-                            <TextBox Margin="0,0,65,0" Height="20" VerticalAlignment="Top" Text="{Binding Name}" FontWeight="Bold"/>
-                            <ComboBox Height="20" Width="70" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsEditable="True" Text="{Binding Method, Mode=TwoWay}">
-                                <ComboBoxItem IsSelected="True" Content="GET"/>
-                                <ComboBoxItem Content="POST"/>
-                                <ComboBoxItem Content="PUT"/>
-                                <ComboBoxItem Content="DELETE"/>
-                                <ComboBoxItem Content="OPTIONS"/>
-                            </ComboBox>
-                            <TextBox Margin="75,0,65,0" Height="20" VerticalAlignment="Bottom" Text="{Binding Url}"/>
-                            <Button x:Name="SendRequestButton" Content="_Send" Width="60" HorizontalAlignment="Right" Click="SendRequestButton_Click"/>
-                        </Grid>
-                        <TabControl Grid.Row="1" Margin="10,10,10,5">
-                            <TabItem Header="Authorisation">
-
-                                <ScrollViewer>
-                                    <StackPanel Orientation="Vertical" Margin="10,0,10,10">
-                                        <Label Content="Type"/>
-                                        <ComboBox x:Name="AuthorizationTypeComboBox" SelectedValuePath="Tag" SelectedValue="{Binding Authorization.Type, Mode=TwoWay}" MaxWidth="200" HorizontalAlignment="Left">
-                                            <ComboBoxItem Tag="None" Content="None"/>
-                                            <ComboBoxItem Tag="Basic" Content="Basic"/>
-                                            <ComboBoxItem Tag="ApiKey" Content="API Key"/>
-                                            <ComboBoxItem Tag="Bearer" Content="Bearer"/>
-                                        </ComboBox>
-
-                                        <StackPanel Orientation="Vertical">
-                                            <StackPanel.Style>
-                                                <Style>
-                                                    <Setter Property="StackPanel.Visibility" Value="Collapsed"></Setter>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=AuthorizationTypeComboBox, Path=SelectedItem.Tag}" Value="Basic">
-                                                            <Setter Property="StackPanel.Visibility" Value="Visible"></Setter>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </StackPanel.Style>
-                                            <Label Content="Username"/>
-                                            <TextBox Width="400" HorizontalAlignment="Left" Text="{Binding Authorization.BasicUserName}"/>
-                                            <Label Content="Password"/>
-                                            <TextBox Width="400" HorizontalAlignment="Left" Text="{Binding Authorization.BasicPassword}"/>
-                                        </StackPanel>
-
-                                        <StackPanel Orientation="Vertical">
-                                            <StackPanel.Style>
-                                                <Style>
-                                                    <Setter Property="StackPanel.Visibility" Value="Collapsed"></Setter>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=AuthorizationTypeComboBox, Path=SelectedItem.Tag}" Value="ApiKey">
-                                                            <Setter Property="StackPanel.Visibility" Value="Visible"></Setter>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </StackPanel.Style>
-                                            <Label Content="Header Name"/>
-                                            <TextBox Width="400" HorizontalAlignment="Left" Text="{Binding Authorization.ApiKeyHeaderName}"/>
-                                            <Label Content="API Key"/>
-                                            <TextBox Width="400" HorizontalAlignment="Left" Text="{Binding Authorization.ApiKeyValue}"/>
-                                        </StackPanel>
-
-                                        <StackPanel Orientation="Vertical">
-                                            <StackPanel.Style>
-                                                <Style>
-                                                    <Setter Property="StackPanel.Visibility" Value="Collapsed"></Setter>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ElementName=AuthorizationTypeComboBox, Path=SelectedItem.Tag}" Value="Bearer">
-                                                            <Setter Property="StackPanel.Visibility" Value="Visible"></Setter>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </StackPanel.Style>
-                                            <Label Content="Bearer Token"/>
-                                            <TextBox Height="100" FontFamily="Consolas" Text="{Binding Authorization.BearerToken}"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                </ScrollViewer>
-
-                            </TabItem>
-                            <TabItem Header="Headers">
-                                <DataGrid ItemsSource="{Binding Headers}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Name" FontFamily="Consolas" Width="1*" Binding="{Binding Name}"/>
-                                        <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </TabItem>
-                            <TabItem Header="Body" IsSelected="True">
-                                <Grid>
-                                    <TextBox BorderThickness="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" Text="{Binding Body}" AcceptsReturn="True" AcceptsTab="True"/>
-                                </Grid>
-                            </TabItem>
-                        </TabControl>
-                        <GridSplitter ResizeDirection="Rows" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                        <TabControl Grid.Row="3" DataContext="{Binding LatestResponse}" Margin="10,5,10,10">
-                            <TabItem Header="Headers">
-                                <DataGrid HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Headers}">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Name" FontFamily="Consolas" Width="1*" Binding="{Binding Name}"/>
-                                        <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </TabItem>
-                            <TabItem Header="Body" IsSelected="True">
-                                <TextBox BorderThickness="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" IsReadOnly="True" Text="{Binding Body}"/>
-                            </TabItem>
-                        </TabControl>
-                        <StatusBar Grid.Row="4">
-                            <TextBlock x:Name="StatusTextBlock" Text="Make a request to see the response."/>
-                        </StatusBar>
-                    </Grid>
+                    <controls:RequestResponseControl></controls:RequestResponseControl>
                 </TabItem>
             </TabControl>
         </Grid>
