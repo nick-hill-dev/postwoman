@@ -20,7 +20,10 @@
     <Compile Update="CollectionConfigurationWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GeneratedCodeWindow.xaml.cs">
+    <Compile Update="GenerateCollectionCodeWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GenerateRequestCodeWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

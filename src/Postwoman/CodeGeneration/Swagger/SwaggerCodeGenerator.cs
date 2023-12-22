@@ -12,9 +12,8 @@ namespace Postwoman.CodeGeneration.Swagger;
 public class SwaggerCodeGenerator : ICodeGenerator
 {
 
-    public string Generate(CollectionViewModel collection, RequestViewModel request)
+    public static ApiDefinition GenerateSwaggerDefinition(CollectionViewModel collection, RequestViewModel request)
     {
-
         var model = new ApiDefinition
         {
             Info = new ApiInfo
@@ -28,6 +27,14 @@ public class SwaggerCodeGenerator : ICodeGenerator
         AddServers(collection, model);
         AddSecurity(request, model);
         AddOperation(collection, request, model);
+
+        return model;
+    }
+
+    public string Generate(CollectionViewModel collection, RequestViewModel request)
+    {
+
+        var model = GenerateSwaggerDefinition(collection, request);
 
         var contractResolver = new DefaultContractResolver
         {
@@ -114,16 +121,27 @@ public class SwaggerCodeGenerator : ICodeGenerator
 
         if (!string.IsNullOrEmpty(request.Body))
         {
+            var contentType = "text/plain";
+            var contentExample = request.Body as object;
+            try
+            {
+                contentExample = JsonConvert.DeserializeObject(request.Body);
+                contentType = "application/json";
+            }
+            catch
+            {
+            }
+
             operation.RequestBody = new ApiOperationRequestBody
             {
                 Required = true,
                 Content = new ApiContent
                 {
                     {
-                        "application/json",
+                        contentType,
                         new ApiContentDetails
                         {
-                            Example = JsonConvert.DeserializeObject(request.Body)
+                            Example = contentExample
                         }
                     }
                 }

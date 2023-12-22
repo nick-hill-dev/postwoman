@@ -114,7 +114,13 @@ namespace Postwoman
                 var responseText = await response.Content.ReadAsStringAsync();
                 if (response.Content.Headers.ContentType.MediaType == "application/json")
                 {
-                    responseText = JsonConvert.SerializeObject(JsonConvert.DeserializeObject(responseText), Formatting.Indented);
+                    try
+                    {
+                        responseText = JsonConvert.SerializeObject(JsonConvert.DeserializeObject(responseText), Formatting.Indented);
+                    }
+                    catch
+                    {
+                    }
                 }
                 selectedRequest.LatestResponse = new ResponseViewModel
                 {
@@ -333,17 +339,21 @@ namespace Postwoman
             );
         }
 
-        private void GenerateSwaggerDefinitionMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var generator = new SwaggerCodeGenerator();
-            var code = generator.Generate(collections.SelectedCollection, collections.SelectedCollection.SelectedRequest);
-            var window = new GeneratedCodeWindow(code);
-            window.ShowDialog();
-        }
-
         private void EditCollectionConfigurationMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var window = new CollectionConfigurationWindow(collections.SelectedCollection);
+            window.ShowDialog();
+        }
+
+        private void GenerateCodeForCollectionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new GenerateCollectionCodeWindow(collections.SelectedCollection);
+            window.ShowDialog();
+        }
+
+        private void GenerateCodeForRequestMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new GenerateRequestCodeWindow(collections.SelectedCollection, collections.SelectedCollection.SelectedRequest);
             window.ShowDialog();
         }
 
