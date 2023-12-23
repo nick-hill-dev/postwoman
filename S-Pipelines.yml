@@ -1,0 +1,40 @@
+stages:
+
+  - name: build
+    jobs:
+
+      - name: build
+        steps:
+
+          - name: build-app
+            type: DotNetPublish@0
+            parameters:
+              fileName: .\src\Postwoman\Postwoman.csproj
+              configuration: Release
+          
+          - name: build-installer
+            type: DotNetBuild@0
+            parameters:
+              fileName: .\src\Postwoman.Installer\Postwoman.Installer.wixproj
+              configuration: Release
+        
+        artifacts:
+
+          - name: Installer
+            path: src/Postwoman.Installer/bin/Release
+            publish: true
+            usedInBuild: true
+
+  - name: publish
+    jobs:
+
+      - name: upload-installer
+        steps:
+
+          - name: files-api-upload
+            type: HCFilesApiUpload@0
+            parameters:
+              artifact: Installer
+              rootName: software-files
+              userName: admin
+              passwordFromKeyVault: admin

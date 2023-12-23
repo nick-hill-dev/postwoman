@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<?define Name = "Postwoman" ?>
+<?define Manufacturer = "Hill Software" ?>
+<?define Version = "1.0.0.0" ?>
+<?define UpgradeCode = "C9A8D36F-D32D-4972-A433-73612159A09A" ?>
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+  <Package Name="$(Name)" Manufacturer="$(Manufacturer)" Version="$(Version)" UpgradeCode="$(var.UpgradeCode)" Compressed="true">
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
+
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLFOLDER" Name="$(Name)" />
+    </StandardDirectory>
+
+    <Icon Id="ProgramIcon.ico" SourceFile="$(var.Postwoman.ProjectDir)ProgramIcon.ico" />
+
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="MainProgram" Guid="1A09EF8C-F3A3-444E-802F-0C3B2B7261F2">
+        <File Id="Postwoman.exe" Source="$(var.Postwoman.TargetDir)publish\Postwoman.exe" KeyPath="true">
+          <Shortcut Id="PostwomanShortcut" Directory="ProgramMenuFolder" Name="Postwoman" Icon="ProgramIcon.ico" Advertise="yes"/>
+        </File>
+        <File Id="Postwoman.dll" Source="$(var.Postwoman.TargetDir)publish\Postwoman.dll" />
+        <File Id="Postwoman.pdb" Source="$(var.Postwoman.TargetDir)publish\Postwoman.pdb" />
+        <File Id="Postwoman.deps.json" Source="$(var.Postwoman.TargetDir)publish\Postwoman.deps.json" />
+        <File Id="Postwoman.runtimeconfig.json" Source="$(var.Postwoman.TargetDir)publish\Postwoman.runtimeconfig.json" />
+        <File Id="Newtonsoft.Json.dll" Source="$(var.Postwoman.TargetDir)publish\Newtonsoft.Json.dll" />
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="Program" Title="[Name] Setup" Level="1">
+      <ComponentRef Id="MainProgram" />
+    </Feature>
+
+  </Package>
+</Wix>
