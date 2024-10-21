@@ -1,10 +1,46 @@
-﻿namespace Postwoman.Models.PwRequest;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-public class RequestHeaderViewModel
+namespace Postwoman.Models.PwRequest;
+
+public class RequestHeaderViewModel : INotifyPropertyChanged
 {
 
-    public string Name { get; set; }
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    public string Value { get; set; }
+    private string _name = string.Empty;
+
+    public string Name
+    {
+        get
+        {
+            return _name;
+        }
+        set
+        {
+            _name = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _value = string.Empty;
+
+    public string Value
+    {
+        get
+        {
+            return _value;
+        }
+        set
+        {
+            _value = value;
+            OnPropertyChanged();
+        }
+    }
+
+    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
 
 }

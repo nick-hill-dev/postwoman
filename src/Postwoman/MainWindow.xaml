@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:Postwoman.WpfValueConverters"
         xmlns:local="clr-namespace:Postwoman" xmlns:controls="clr-namespace:Postwoman.Controls"
+        xmlns:pwrequest="clr-namespace:Postwoman.Models.PwRequest" d:DataContext="{d:DesignInstance Type=pwrequest:CollectionsViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Title="Postwoman" Height="600" Width="1024" WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -74,29 +75,6 @@
                 </MenuItem>
                 <Separator/>
                 <MenuItem x:Name="EditCollectionConfigurationMenuItem" Header="Collection _Configuration..." Click="EditCollectionConfigurationMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
-                <Separator/>
-                <MenuItem x:Name="EditVariablesMenuItem" Header="Edit Collection Variables..." Click="EditVariablesMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
-                <MenuItem x:Name="EditHeadersMenuItem" Header="Edit Collection Headers..." Click="EditHeadersMenuItem_Click">
                     <MenuItem.Style>
                         <Style TargetType="MenuItem">
                             <Style.Triggers>
@@ -196,7 +174,11 @@
 
             <GridSplitter ResizeDirection="Columns" Grid.Column="1" HorizontalAlignment="Stretch"/>
 
-            <TabControl x:Name="RequestsTabControl" Grid.Column="2" Margin="5,10,10,10">
+            <StackPanel Orientation="Horizontal" Grid.Column="2" Height="Auto" Margin="0,10,10,0" HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Top">
+                <ComboBox Height="Auto" Width="200" FontSize="16" FontWeight="Bold" ItemsSource="{Binding SelectedCollection.Environments}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedCollection.SelectedEnvironment, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <TabControl x:Name="RequestsTabControl" Grid.Column="2" Margin="5,40,10,10">
                 <TabControl.Style>
                     <Style TargetType="TabControl">
                         <Style.Triggers>

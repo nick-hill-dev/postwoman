@@ -3,13 +3,140 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Postwoman" xmlns:pwrequest="clr-namespace:Postwoman.Models.PwRequest" d:DataContext="{d:DesignInstance Type=pwrequest:CollectionViewModel}"
+        xmlns:local="clr-namespace:Postwoman"
+        xmlns:pwrequest="clr-namespace:Postwoman.Models.PwRequest" d:DataContext="{d:DesignInstance Type=pwrequest:CollectionViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Title="Collection Servers" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <DataGrid AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding Servers}" CanUserAddRows="True" CanUserDeleteRows="True">
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
-            <DataGridTextColumn Header="BaseUrl" Width="4*" Binding="{Binding BaseUrl}"/>
-        </DataGrid.Columns>
-    </DataGrid>
+    <TabControl Margin="10">
+        <TabItem Header="Servers">
+            <DataGrid AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding Servers}" CanUserAddRows="True" CanUserDeleteRows="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="BaseUrl" Width="4*" Binding="{Binding BaseUrl}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </TabItem>
+        <TabItem Header="Headers">
+            <DataGrid AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding Headers}" CanUserAddRows="True" CanUserDeleteRows="True" d:ItemsSource="{d:SampleData ItemCount=2}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </TabItem>
+        <TabItem Header="Variable Groups">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0" Margin="0,0,5,0" ItemsSource="{Binding VariableGroups}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedVariableGroup, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=3}">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="NewVariableGroupMenuItem" Header="_New" Click="NewVariableGroupMenuItem_Click"/>
+                            <MenuItem x:Name="DeleteVariableGroupMenuItem" Header="_Delete" Click="DeleteVariableGroupMenuItem_Click">
+                                <MenuItem.Style>
+                                    <Style TargetType="MenuItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedVariableGroup}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </MenuItem.Style>
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem x:Name="DuplicateVariableGroupMenuItem" Header="Duplicate" Click="DuplicateVariableGroupMenuItem_Click">
+                                <MenuItem.Style>
+                                    <Style TargetType="MenuItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedVariableGroup}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </MenuItem.Style>
+                            </MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+
+                <Grid Grid.Column="2">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedVariableGroup}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <Label Content="Name:" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
+                    <TextBox Margin="62,9,5,0" Text="{Binding SelectedVariableGroup.Name, Mode=TwoWay}" VerticalAlignment="Top"/>
+                    <Label Content="Inherits:" HorizontalAlignment="Left" Margin="5,28,0,0" VerticalAlignment="Top"/>
+                    <ComboBox Margin="62,30,5,0" VerticalAlignment="Top" ItemsSource="{Binding VariableGroups}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedVariableGroup.Inherits, Mode=TwoWay}"/>
+                    <DataGrid Margin="5,57,5,5" AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding SelectedVariableGroup.Variables}" CanUserAddRows="True" CanUserDeleteRows="True" d:ItemsSource="{d:SampleData ItemCount=15}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                
+            </Grid>
+        </TabItem>
+        <TabItem Header="Environments">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0" Margin="0,0,5,0" ItemsSource="{Binding Environments}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedEnvironment, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=3}">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="NewEnvironmentMenuItem" Header="_New" Click="NewEnvironmentMenuItem_Click"/>
+                            <MenuItem x:Name="DeleteEnvironmentMenuItem" Header="_Delete" Click="DeleteEnvironmentMenuItem_Click">
+                                <MenuItem.Style>
+                                    <Style TargetType="MenuItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedEnvironment}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </MenuItem.Style>
+                            </MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+
+                <Grid Grid.Column="2">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedEnvironment}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <Label Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                    <TextBox Margin="10,41,10,0" Text="{Binding SelectedEnvironment.Name, Mode=TwoWay}" VerticalAlignment="Top"/>
+                    <Label Content="Server:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,64,0,0"/>
+                    <ComboBox Margin="10,95,10,0" VerticalAlignment="Top" Height="Auto" ItemsSource="{Binding Servers}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedEnvironment.Server, Mode=TwoWay}"/>
+                    <Label Content="Variable Group:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,122,0,0"/>
+                    <ComboBox Margin="10,153,10,0" VerticalAlignment="Top" Height="Auto" ItemsSource="{Binding VariableGroups}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedEnvironment.VariableGroup, Mode=TwoWay}"/>
+                </Grid>
+                
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -40,8 +41,42 @@ public class CollectionViewModel : INotifyPropertyChanged
         }
     }
 
+    private ObservableCollection<VariableGroupViewModel> _variableGroups = new();
+
+    public ObservableCollection<VariableGroupViewModel> VariableGroups
+    {
+        get
+        {
+            return _variableGroups;
+        }
+        set
+        {
+            _variableGroups = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private VariableGroupViewModel _selectedVariableGroup;
+
+    [JsonIgnore]
+    public VariableGroupViewModel SelectedVariableGroup
+    {
+        get
+        {
+            return _selectedVariableGroup;
+        }
+        set
+        {
+            _selectedVariableGroup = value;
+            OnPropertyChanged();
+        }
+    }
+
+    // TODO: Consider removing, and ensure we upgrade existing collections
+
     private ObservableCollection<VariableViewModel> _variables = new();
 
+    [Obsolete]
     public ObservableCollection<VariableViewModel> Variables
     {
         get
@@ -51,6 +86,21 @@ public class CollectionViewModel : INotifyPropertyChanged
         set
         {
             _variables = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private ObservableCollection<EnvironmentViewModel> _environments = new();
+
+    public ObservableCollection<EnvironmentViewModel> Environments
+    {
+        get
+        {
+            return _environments;
+        }
+        set
+        {
+            _environments = value;
             OnPropertyChanged();
         }
     }
@@ -97,6 +147,22 @@ public class CollectionViewModel : INotifyPropertyChanged
         set
         {
             _selectedRequest = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private EnvironmentViewModel _selectedEnvironment;
+
+    [JsonIgnore]
+    public EnvironmentViewModel SelectedEnvironment
+    {
+        get
+        {
+            return _selectedEnvironment;
+        }
+        set
+        {
+            _selectedEnvironment = value;
             OnPropertyChanged();
         }
     }

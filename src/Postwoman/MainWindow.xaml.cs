@@ -125,6 +125,18 @@ namespace Postwoman
             {
                 var text = File.ReadAllText(dialog.FileName);
                 var collection = JsonConvert.DeserializeObject<CollectionViewModel>(text, serializationSettings);
+
+                // Upgrade older collections which only have a single variable group
+                if (collection.Variables != null)
+                {
+                    var newVariableGroup = new VariableGroupViewModel { Name = "Variables", Variables = collection.Variables };
+                    collection.VariableGroups.Add(newVariableGroup);
+                    if (collection.Servers.Count > 0)
+                    {
+                        collection.Environments.Add(new EnvironmentViewModel { Name = "Main", Server = collection.Servers.First(), VariableGroup = newVariableGroup });
+                    }
+                    collection.Variables = null;
+                }
                 collections.Collections.Add(collection);
                 collections.SelectedCollection = collection;
             }
@@ -145,16 +157,6 @@ namespace Postwoman
         {
             var window = new EditCollectionWindow(collections.SelectedCollection);
             window.ShowDialog();
-        }
-
-        private void EditVariablesMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            new CollectionVariablesWindow(collections.SelectedCollection).ShowDialog();
-        }
-
-        private void EditHeadersMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            new CollectionHeadersWindow(collections.SelectedCollection).ShowDialog();
         }
 
         private void DeleteCollectionMenuItem_Click(object sender, RoutedEventArgs e)

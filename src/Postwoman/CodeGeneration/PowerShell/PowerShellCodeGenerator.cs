@@ -1,7 +1,6 @@
 ﻿using Postwoman.Models.PwRequest;
 using System;
 using System.Collections.Generic;
-using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace Postwoman.CodeGeneration.PowerShell;

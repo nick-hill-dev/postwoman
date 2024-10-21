@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Postwoman.Models.PwRequest;
 
-public class VariableViewModel : INotifyPropertyChanged
+public class EnvironmentViewModel : INotifyPropertyChanged
 {
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -23,17 +23,32 @@ public class VariableViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _value = string.Empty;
+    private ServerViewModel _server;
 
-    public string Value
+    public ServerViewModel Server
     {
         get
         {
-            return _value;
+            return _server;
         }
         set
         {
-            _value = value;
+            _server = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private VariableGroupViewModel _variableGroup;
+
+    public VariableGroupViewModel VariableGroup
+    {
+        get
+        {
+            return _variableGroup;
+        }
+        set
+        {
+            _variableGroup = value;
             OnPropertyChanged();
         }
     }
