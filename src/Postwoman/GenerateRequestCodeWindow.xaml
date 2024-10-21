@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Postwoman"
         mc:Ignorable="d"
-        Title="Generate Request Code" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Generate Request Code" Height="600" Width="800" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <Grid>
-        <TextBox x:Name="CodeTextBox" FontFamily="Consolas" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"/>
+        <ComboBox x:Name="ScenarioComboBox" VerticalAlignment="Top" Margin="10,10,10,0" SelectionChanged="ScenarioComboBox_SelectionChanged">
+            <ComboBoxItem IsSelected="True" Content="Swagger"/>
+            <ComboBoxItem Content="PowerShell"/>
+        </ComboBox>
+        <TextBox x:Name="CodeTextBox" FontFamily="Consolas" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Margin="10,37,10,10"/>
     </Grid>
 </Window>
