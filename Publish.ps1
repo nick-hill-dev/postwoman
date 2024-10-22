@@ -17,10 +17,10 @@ $platformId = $platforms[0].id
 $products = Invoke-RestMethod -Method Get -Headers $headers -Uri "$baseUrl/data/Product?condition=GroupId.Title eq Tools and Name eq Postwoman&limit=1"
 $productId = $products[0].id
 
-$version = "0.1.0"
+$version = "0.2.0"
 $release = @{
     productId = $productId
-    version = "0.1"
+    version = "0.2"
     maturity = "beta"
     releaseDate = (Get-Date).ToString("yyyy-MM-dd")
     releaseFiles = @(
