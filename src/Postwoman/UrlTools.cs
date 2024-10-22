@@ -3,15 +3,17 @@ using System.Linq;
 
 namespace Postwoman;
 
-public class UrlTools
+public static class UrlTools
 {
 
     public static string GetFullUrl(CollectionViewModel collection, RequestViewModel request)
     {
-        var url = collection.Servers?.Count == 0 || request.Url.StartsWith("http://") || request.Url.StartsWith("https://")
-            ? request.Url
-            : collection.Servers.First().BaseUrl + (request.Url.StartsWith("/") ? string.Empty : "/") + request.Url;
+        var environment = collection.SelectedEnvironment;
+        var server = environment?.Server;
 
+        var url = server == null || request.Url.StartsWith("http://") || request.Url.StartsWith("https://")
+            ? request.Url
+            : server.BaseUrl + (request.Url.StartsWith("/") ? string.Empty : "/") + request.Url;
 
         var parameters = request.Query.Where(q => q.IsChecked).ToArray();
         if (parameters.Length > 0)
@@ -23,7 +25,9 @@ public class UrlTools
                 url += $"{parameter.Name}={parameter.Value}";
             }
         }
-        return VariableReplacer.Replace(url, collection.Variables);
+
+        var variables = environment?.VariableGroup != null ? VariableCompiler.Compile(environment.VariableGroup) : new();
+        return VariableReplacer.Replace(url, variables);
     }
 
     public static string[] GetFragments(string url)

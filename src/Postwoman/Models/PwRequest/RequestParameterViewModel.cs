@@ -1,12 +1,61 @@
-﻿namespace Postwoman.Models.PwRequest;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-public class RequestParameterViewModel
+namespace Postwoman.Models.PwRequest;
+
+public class RequestParameterViewModel : INotifyPropertyChanged
 {
 
-    public bool IsChecked { get; set; }
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    public string Name { get; set; }
+    private bool _isChecked;
 
-    public string Value { get; set; }
+    public bool IsChecked
+    {
+        get
+        {
+            return _isChecked;
+        }
+        set
+        {
+            _isChecked = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _name = string.Empty;
+
+    public string Name
+    {
+        get
+        {
+            return _name;
+        }
+        set
+        {
+            _name = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _value = string.Empty;
+
+    public string Value
+    {
+        get
+        {
+            return _value;
+        }
+        set
+        {
+            _value = value;
+            OnPropertyChanged();
+        }
+    }
+
+    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
 
 }

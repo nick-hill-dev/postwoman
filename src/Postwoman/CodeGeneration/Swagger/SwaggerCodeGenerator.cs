@@ -24,9 +24,11 @@ public class SwaggerCodeGenerator : ICodeGenerator
             Paths = new ApiPaths()
         };
 
+        var variables = VariableCompiler.Compile(collection.SelectedEnvironment.VariableGroup);
+
         AddServers(collection, model);
         AddSecurity(request, model);
-        AddOperation(collection, request, model);
+        AddOperation(collection, request, variables, model);
 
         return model;
     }
@@ -107,7 +109,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
         }
     }
 
-    private static void AddOperation(CollectionViewModel collection, RequestViewModel request, ApiDefinition model)
+    private static void AddOperation(CollectionViewModel collection, RequestViewModel request, Dictionary<string, string> variables, ApiDefinition model)
     {
         var operation = new ApiOperation
         {
@@ -117,7 +119,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
         };
 
         AddOperationSecurity(request, operation);
-        AddOperationParameters(collection, request, operation);
+        AddOperationParameters(collection, request, variables, operation);
 
         if (!string.IsNullOrEmpty(request.Body))
         {
@@ -224,7 +226,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
         }
     }
 
-    private static void AddOperationParameters(CollectionViewModel collection, RequestViewModel request, ApiOperation operation)
+    private static void AddOperationParameters(CollectionViewModel collection, RequestViewModel request, Dictionary<string, string> variables, ApiOperation operation)
     {
         var fullUrl = new Uri(UrlTools.GetFullUrl(collection, request));
         var fragments = UrlTools.GetFragments(request.Url);
@@ -248,6 +250,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
             }
             foreach (var fragment in fragments)
             {
+                var variableValue = variables[fragment];
                 operation.Parameters.Add(new ApiOperationParameter
                 {
                     Name = fragment,
@@ -255,7 +258,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
                     Required = true,
                     Schema = new
                     {
-                        type = GuessType(collection.Variables.First(v => v.Name == fragment).Value)
+                        type = GuessType(variableValue)
                     },
                     Description = $"The {fragment} specified in the URL."
                 });

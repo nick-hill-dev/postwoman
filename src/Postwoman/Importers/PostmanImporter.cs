@@ -3,6 +3,7 @@ using Newtonsoft.Json.Serialization;
 using Postwoman.Models.PostmanCollection;
 using Postwoman.Models.PwRequest;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -32,14 +33,30 @@ public class PostmanImporter
             {
                 Name = collection.Name
             };
-            foreach (var variable in collection.Variables)
+
+            if (collection.Variables.Count > 0)
             {
-                newCollection.Variables.Add(new VariableViewModel
+                var variableGroup = new VariableGroupViewModel
                 {
-                    Name = variable.Key,
-                    Value = variable.Value
+                    Name = "Variables",
+                    Variables = new ObservableCollection<VariableViewModel>
+                    (
+                        collection.Variables.Select(v => new VariableViewModel
+                        {
+                            Name = v.Key,
+                            Value = v.Value
+                        })
+                    )
+                };
+                newCollection.VariableGroups.Add(variableGroup);
+
+                newCollection.Environments.Add(new EnvironmentViewModel
+                {
+                    Name = "Main",
+                    VariableGroup = variableGroup
                 });
             }
+
             if (collection.Auth?.ApiKey?.Count > 0)
             {
                 newCollection.Headers.Add(new RequestHeaderViewModel
@@ -48,6 +65,7 @@ public class PostmanImporter
                     Value = collection.Auth.ApiKey.First(k => k.Key == "value").Value
                 });
             }
+
             foreach (var request in collection.Requests)
             {
                 var newRequest = new RequestViewModel
@@ -56,6 +74,7 @@ public class PostmanImporter
                     Name = request.Name,
                     Url = request.Url
                 };
+
                 if (request.Auth?.ApiKey?.Count > 0)
                 {
                     newRequest.Headers.Add(new RequestHeaderViewModel
@@ -64,6 +83,7 @@ public class PostmanImporter
                         Value = request.Auth.ApiKey.First(k => k.Key == "value").Value
                     });
                 }
+
                 foreach (var header in request.HeaderData ?? new List<PostmanHeaderDataItem>())
                 {
                     newRequest.Headers.Add(new RequestHeaderViewModel
@@ -72,6 +92,7 @@ public class PostmanImporter
                         Value = header.Value
                     });
                 }
+
                 if (!string.IsNullOrEmpty(request.RawModeData))
                 {
                     newRequest.Body = request.RawModeData;

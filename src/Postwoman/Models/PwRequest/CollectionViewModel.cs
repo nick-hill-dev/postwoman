@@ -72,11 +72,10 @@ public class CollectionViewModel : INotifyPropertyChanged
         }
     }
 
-    // TODO: Consider removing, and ensure we upgrade existing collections
+    private ObservableCollection<VariableViewModel> _variables;
 
-    private ObservableCollection<VariableViewModel> _variables = new();
-
-    [Obsolete]
+    [Obsolete("Don't use this. It remains in place to support upgrading older files that use the old format.")]
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public ObservableCollection<VariableViewModel> Variables
     {
         get

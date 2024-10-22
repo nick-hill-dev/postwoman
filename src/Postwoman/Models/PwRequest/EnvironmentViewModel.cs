@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Postwoman.Models.PwRequest;
@@ -25,6 +26,7 @@ public class EnvironmentViewModel : INotifyPropertyChanged
 
     private ServerViewModel _server;
 
+    [JsonIgnore]
     public ServerViewModel Server
     {
         get
@@ -34,12 +36,17 @@ public class EnvironmentViewModel : INotifyPropertyChanged
         set
         {
             _server = value;
+            ServerName = value?.Name;
             OnPropertyChanged();
         }
     }
 
+    [JsonProperty("server")]
+    public string ServerName { get; set; }
+
     private VariableGroupViewModel _variableGroup;
 
+    [JsonIgnore]
     public VariableGroupViewModel VariableGroup
     {
         get
@@ -49,9 +56,13 @@ public class EnvironmentViewModel : INotifyPropertyChanged
         set
         {
             _variableGroup = value;
+            VariableGroupName = value?.Name;
             OnPropertyChanged();
         }
     }
+
+    [JsonProperty("variableGroup")]
+    public string VariableGroupName { get; set; }
 
     protected void OnPropertyChanged([CallerMemberName] string name = null)
     {

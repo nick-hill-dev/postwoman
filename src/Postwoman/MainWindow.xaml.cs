@@ -125,9 +125,27 @@ namespace Postwoman
             {
                 var text = File.ReadAllText(dialog.FileName);
                 var collection = JsonConvert.DeserializeObject<CollectionViewModel>(text, serializationSettings);
+                foreach (var group in collection.VariableGroups)
+                {
+                    if (!string.IsNullOrEmpty(group.InheritsGroupName))
+                    {
+                        group.Inherits = collection.VariableGroups.First(g => g.Name == group.InheritsGroupName);
+                    }
+                }
+                foreach (var environment in collection.Environments)
+                {
+                    if (!string.IsNullOrEmpty(environment.ServerName))
+                    {
+                        environment.Server = collection.Servers.First(s => s.Name == environment.ServerName);
+                    }
+                    if (!string.IsNullOrEmpty(environment.VariableGroupName))
+                    {
+                        environment.VariableGroup = collection.VariableGroups.First(g => g.Name == environment.VariableGroupName);
+                    }
+                }
 
                 // Upgrade older collections which only have a single variable group
-                if (collection.Variables != null)
+                if (collection.Variables?.Count > 0)
                 {
                     var newVariableGroup = new VariableGroupViewModel { Name = "Variables", Variables = collection.Variables };
                     collection.VariableGroups.Add(newVariableGroup);

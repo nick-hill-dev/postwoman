@@ -60,8 +60,8 @@
                             </Style.Triggers>
                         </Style>
                     </MenuItem.Style>
-                    <Separator/>
                 </MenuItem>
+                <Separator/>
                 <MenuItem x:Name="SortCollectionMenuItem" Header="_Sort" Click="SortCollectionMenuItem_Click">
                     <MenuItem.Style>
                         <Style TargetType="MenuItem">

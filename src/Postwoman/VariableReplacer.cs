@@ -1,5 +1,4 @@
-﻿using Postwoman.Models.PwRequest;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,13 +50,15 @@ public static class VariableReplacer
         return value;
     }
 
-    public static string Replace(string value, ICollection<VariableViewModel> variables)
+    public static string Replace(string value, Dictionary<string, string> variables)
     {
         string replacer(string variableName)
         {
-            var variableValue = variables.FirstOrDefault(v => v.Name == variableName)
-                ?? throw new Exception("Variable not defined: " + variableName);
-            return variableValue.Value;
+            if (!variables.TryGetValue(variableName, out var variableValue))
+            {
+                throw new Exception("Variable not defined: " + variableName);
+            }
+            return variableValue;
         }
         return Replace(value, replacer);
     }

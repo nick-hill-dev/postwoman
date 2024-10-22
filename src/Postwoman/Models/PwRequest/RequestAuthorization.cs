@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Postwoman.Models.PwRequest;
@@ -25,6 +26,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     private string _basicUserName;
 
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public string BasicUserName
     {
         get
@@ -40,6 +42,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     private string _basicPassword;
 
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public string BasicPassword
     {
         get
@@ -55,6 +58,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     private string _apiKeyHeaderName = "x-api-key";
 
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public string ApiKeyHeaderName
     {
         get
@@ -70,6 +74,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     private string _apiKeyValue;
 
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public string ApiKeyValue
     {
         get
@@ -85,6 +90,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     private string _bearerToken;
 
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public string BearerToken
     {
         get

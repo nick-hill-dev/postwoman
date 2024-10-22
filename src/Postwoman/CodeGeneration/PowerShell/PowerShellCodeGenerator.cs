@@ -20,10 +20,11 @@ public class PowerShellCodeGenerator : ICodeGenerator
             code.AppendLine();
         }
 
+        var variables = VariableCompiler.Compile(collection.SelectedEnvironment.VariableGroup);
         var isBearerAuth = request.Authorization.Type == "Bearer";
         if (isBearerAuth)
         {
-            var bearerToken = VariableReplacer.Replace(request.Authorization.BearerToken, collection.Variables);
+            var bearerToken = VariableReplacer.Replace(request.Authorization.BearerToken, variables);
             code.AppendLine($"$bearerToken = \"{Escape(bearerToken)}\"");
             code.AppendLine();
         }
@@ -43,14 +44,14 @@ public class PowerShellCodeGenerator : ICodeGenerator
             }
             if (isApiKeyAuth)
             {
-                var headerName = VariableReplacer.Replace(request.Authorization.ApiKeyHeaderName, collection.Variables);
-                var headerValue = VariableReplacer.Replace(request.Authorization.ApiKeyValue, collection.Variables);
+                var headerName = VariableReplacer.Replace(request.Authorization.ApiKeyHeaderName, variables);
+                var headerValue = VariableReplacer.Replace(request.Authorization.ApiKeyValue, variables);
                 code.AppendLine($"    \"{Escape(headerName)}\" = \"{Escape(headerValue)}\"");
             }
             foreach (var header in GetHeaders(collection, request))
             {
-                var headerName = VariableReplacer.Replace(header.Name, collection.Variables);
-                var headerValue = VariableReplacer.Replace(header.Value, collection.Variables);
+                var headerName = VariableReplacer.Replace(header.Name, variables);
+                var headerValue = VariableReplacer.Replace(header.Value, variables);
                 code.AppendLine($"    \"{Escape(headerName)}\" = \"{Escape(headerValue)}\"");
             }
             code.AppendLine("}");
@@ -74,8 +75,11 @@ public class PowerShellCodeGenerator : ICodeGenerator
                 code.Append($" -ContentType \"{contentType}\"");
             }
 
-            var body = VariableReplacer.Replace(request.Body, collection.Variables);
-            code.Append($" -Body @'{Environment.NewLine}{body}{Environment.NewLine}'@");
+            var body = VariableReplacer.Replace(request.Body, variables);
+            if (!string.IsNullOrWhiteSpace(body))
+            {
+                code.Append($" -Body @'{Environment.NewLine}{body}{Environment.NewLine}'@");
+            }
         }
         return code.ToString();
     }

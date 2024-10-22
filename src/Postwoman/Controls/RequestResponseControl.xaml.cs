@@ -36,11 +36,12 @@ namespace Postwoman.Controls
 
                 var request = new HttpRequestMessage(requestMethod, fullUrl);
 
+                var variables = VariableCompiler.Compile(selectedCollection.SelectedEnvironment?.VariableGroup ?? new());
                 foreach (var header in selectedCollection.Headers)
                 {
                     request.Headers.TryAddWithoutValidation(
                         header.Name,
-                        VariableReplacer.Replace(header.Value, selectedCollection.Variables)
+                        VariableReplacer.Replace(header.Value, variables)
                     );
                 }
 
@@ -48,27 +49,27 @@ namespace Postwoman.Controls
                 {
                     request.Headers.TryAddWithoutValidation(
                         header.Name,
-                        VariableReplacer.Replace(header.Value, selectedCollection.Variables)
+                        VariableReplacer.Replace(header.Value, variables)
                     );
                 }
 
                 switch (selectedRequest.Authorization.Type)
                 {
                     case "Basic":
-                        var userName = VariableReplacer.Replace(selectedRequest.Authorization.BasicUserName, selectedCollection.Variables);
-                        var password = VariableReplacer.Replace(selectedRequest.Authorization.BasicPassword, selectedCollection.Variables);
+                        var userName = VariableReplacer.Replace(selectedRequest.Authorization.BasicUserName, variables);
+                        var password = VariableReplacer.Replace(selectedRequest.Authorization.BasicPassword, variables);
                         var authenticationString = $"{userName}:{password}";
                         var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
                         request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
                         break;
 
                     case "ApiKey":
-                        var apiKey = VariableReplacer.Replace(selectedRequest.Authorization.ApiKeyHeaderName, selectedCollection.Variables);
+                        var apiKey = VariableReplacer.Replace(selectedRequest.Authorization.ApiKeyHeaderName, variables);
                         request.Headers.TryAddWithoutValidation(apiKey, selectedRequest.Authorization.ApiKeyValue);
                         break;
 
                     case "Bearer":
-                        var bearerToken = VariableReplacer.Replace(selectedRequest.Authorization.BearerToken, selectedCollection.Variables);
+                        var bearerToken = VariableReplacer.Replace(selectedRequest.Authorization.BearerToken, variables);
                         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
                         break;
                 }
@@ -77,7 +78,7 @@ namespace Postwoman.Controls
                 {
                     var mediaType = "application/json";
                     request.Content = new StringContent(
-                        VariableReplacer.Replace(selectedRequest.Body, selectedCollection.Variables),
+                        VariableReplacer.Replace(selectedRequest.Body, variables),
                         Encoding.UTF8,
                         mediaType
                     );
