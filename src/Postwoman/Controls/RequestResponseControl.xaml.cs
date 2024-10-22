@@ -76,7 +76,8 @@ namespace Postwoman.Controls
 
                 if (!string.IsNullOrEmpty(selectedRequest.Body))
                 {
-                    var mediaType = "application/json";
+                    var specifiedContentType = selectedRequest.Headers.FirstOrDefault(h => h.Name == "Content-Type")?.Value;
+                    var mediaType = specifiedContentType ?? "application/json";
                     request.Content = new StringContent(
                         VariableReplacer.Replace(selectedRequest.Body, variables),
                         Encoding.UTF8,

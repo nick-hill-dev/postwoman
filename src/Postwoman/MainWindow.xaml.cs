@@ -145,7 +145,7 @@ namespace Postwoman
                 }
 
                 // Upgrade older collections which only have a single variable group
-                if (collection.Variables?.Count > 0)
+                if (collection.Variables != null)
                 {
                     var newVariableGroup = new VariableGroupViewModel { Name = "Variables", Variables = collection.Variables };
                     collection.VariableGroups.Add(newVariableGroup);
