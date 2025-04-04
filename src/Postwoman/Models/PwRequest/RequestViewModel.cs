@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -92,7 +91,6 @@ public class RequestViewModel : INotifyPropertyChanged
 
     private ResponseViewModel _latestResponse;
 
-    [JsonIgnore]
     public ResponseViewModel LatestResponse
     {
         get
@@ -127,17 +125,17 @@ public class RequestViewModel : INotifyPropertyChanged
                 ApiKeyValue = Authorization.ApiKeyValue,
                 BearerToken = Authorization.BearerToken
             },
-            Headers = new ObservableCollection<RequestHeaderViewModel>(Headers.Select(h => new RequestHeaderViewModel
+            Headers = [..Headers.Select(h => new RequestHeaderViewModel
             {
                 Name = h.Name,
                 Value = h.Value
-            })),
-            Query = new ObservableCollection<RequestParameterViewModel>(Query.Select(h => new RequestParameterViewModel
+            })],
+            Query = [..Query.Select(h => new RequestParameterViewModel
             {
                 IsChecked = h.IsChecked,
                 Name = h.Name,
                 Value = h.Value
-            })),
+            })],
             Body = Body
         };
     }

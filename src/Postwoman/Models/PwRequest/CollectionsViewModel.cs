@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -10,11 +9,10 @@ public class CollectionsViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public ObservableCollection<CollectionViewModel> Collections { get; set; } = new();
+    public ObservableCollection<CollectionViewModel> Collections { get; set; } = [];
 
     private CollectionViewModel _selectedCollection;
 
-    [JsonIgnore]
     public CollectionViewModel SelectedCollection
     {
         get

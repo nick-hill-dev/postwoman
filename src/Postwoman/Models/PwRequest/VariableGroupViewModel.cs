@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -28,7 +27,6 @@ public class VariableGroupViewModel : INotifyPropertyChanged
 
     private VariableGroupViewModel _inherits;
 
-    [JsonIgnore]
     public VariableGroupViewModel Inherits
     {
         get
@@ -38,13 +36,9 @@ public class VariableGroupViewModel : INotifyPropertyChanged
         set
         {
             _inherits = value;
-            InheritsGroupName = value?.Name;
             OnPropertyChanged();
         }
     }
-
-    [JsonProperty("inherits")]
-    public string InheritsGroupName { get; set; }
 
     public ObservableCollection<VariableViewModel> Variables { get; set; } = new();
 

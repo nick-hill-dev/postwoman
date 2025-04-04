@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Postwoman.Windows"
+        xmlns:converters="clr-namespace:Postwoman.WpfValueConverters"
         xmlns:pwrequest="clr-namespace:Postwoman.Models.PwRequest" d:DataContext="{d:DesignInstance Type=pwrequest:CollectionViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
-        Title="Collection Servers" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Collection Servers" Height="550" Width="800" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <converters:EqualsToVisibilityConverter x:Key="EqualsToVisibilityConverter"/>
+    </Window.Resources>
     <TabControl Margin="10">
         <TabItem Header="Servers">
             <DataGrid AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding Servers}" CanUserAddRows="True" CanUserDeleteRows="True">
@@ -75,18 +79,43 @@
                         </Style>
                     </Grid.Style>
 
-                    <Label Content="Name:" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
-                    <TextBox Margin="62,9,5,0" Text="{Binding SelectedVariableGroup.Name, Mode=TwoWay}" VerticalAlignment="Top"/>
-                    <Label Content="Inherits:" HorizontalAlignment="Left" Margin="5,28,0,0" VerticalAlignment="Top"/>
-                    <ComboBox Margin="62,30,5,0" VerticalAlignment="Top" ItemsSource="{Binding VariableGroups}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedVariableGroup.Inherits, Mode=TwoWay}"/>
-                    <DataGrid Margin="5,57,5,5" AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding SelectedVariableGroup.Variables}" CanUserAddRows="True" CanUserDeleteRows="True" d:ItemsSource="{d:SampleData ItemCount=15}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name" Width="1*" Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Name:" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
+                        <TextBox Margin="62,9,5,0" Text="{Binding SelectedVariableGroup.Name, Mode=TwoWay}" VerticalAlignment="Top"/>
+                        <Label Content="Inherits:" HorizontalAlignment="Left" Margin="5,28,0,0" VerticalAlignment="Top"/>
+                        <ComboBox Margin="62,30,5,0" VerticalAlignment="Top" ItemsSource="{Binding VariableGroups}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedVariableGroup.Inherits, Mode=TwoWay}"/>
+                        <DataGrid Margin="5,57,5,5" AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding SelectedVariableGroup.Variables}" CanUserAddRows="True" CanUserDeleteRows="True" d:ItemsSource="{d:SampleData ItemCount=15}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Value" Width="6*" Binding="{Binding Value}"/>
+                                <DataGridTextColumn  Header="Source" Width="2*" Binding="{Binding Source}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <GridSplitter Grid.Row="1" ResizeDirection="Rows" VerticalAlignment="Stretch"/>
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <Label Content="Source:"/>
+                            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Source, Mode=TwoWay}">
+                                <ComboBoxItem Tag="Temporary" Content="Temporary" />
+                                <ComboBoxItem Tag="Collection" Content="Collection" />
+                                <ComboBoxItem Tag="EnvironmentVariable" Content="Environment Variable" />
+                            </ComboBox>
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" Visibility="{Binding Source, Converter={StaticResource EqualsToVisibilityConverter}, ConverterParameter=EnvironmentVariable}">
+                                <Label Content="Environment Variable Name:"/>
+                                <TextBox Text="{Binding SourceDetails, Mode=TwoWay}" Width="200"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
                 </Grid>
-                
+
             </Grid>
         </TabItem>
         <TabItem Header="Environments">
@@ -135,7 +164,7 @@
                     <Label Content="Variable Group:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,122,0,0"/>
                     <ComboBox Margin="10,153,10,0" VerticalAlignment="Top" Height="Auto" ItemsSource="{Binding VariableGroups}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedEnvironment.VariableGroup, Mode=TwoWay}"/>
                 </Grid>
-                
+
             </Grid>
         </TabItem>
     </TabControl>

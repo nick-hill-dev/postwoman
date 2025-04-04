@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Postwoman.Importers;
 using Postwoman.Models.PwRequest;
+using Postwoman.Models.PwRequest2;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -110,8 +111,7 @@ namespace Postwoman.Windows
             };
             if (dialog.ShowDialog() == true)
             {
-                var json = JsonConvert.SerializeObject(collections.SelectedCollection, serializationSettings);
-                File.WriteAllText(dialog.FileName, json);
+                collections.SelectedCollection.ToFile().Save(dialog.FileName);
             }
         }
 
@@ -123,7 +123,7 @@ namespace Postwoman.Windows
             };
             if (dialog.ShowDialog() == true)
             {
-                var collection = CollectionLoader.Load(dialog.FileName);
+                var collection = Collection.Load(dialog.FileName).ToViewModel();
                 collections.Collections.Add(collection);
                 collections.SelectedCollection = collection;
             }

@@ -38,6 +38,21 @@ public class VariableViewModel : INotifyPropertyChanged
         }
     }
 
+    private string _source = string.Empty;
+
+    public string Source
+    {
+        get
+        {
+            return _source;
+        }
+        set
+        {
+            _source = value;
+            OnPropertyChanged();
+        }
+    }
+
     protected void OnPropertyChanged([CallerMemberName] string name = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
