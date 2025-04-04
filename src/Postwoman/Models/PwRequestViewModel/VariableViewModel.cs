@@ -38,7 +38,7 @@ public class VariableViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _source = string.Empty;
+    private string _source = "Collection";
 
     public string Source
     {
@@ -49,6 +49,21 @@ public class VariableViewModel : INotifyPropertyChanged
         set
         {
             _source = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _environmentVariableName = string.Empty;
+
+    public string EnvironmentVariableName
+    {
+        get
+        {
+            return _environmentVariableName;
+        }
+        set
+        {
+            _environmentVariableName = value;
             OnPropertyChanged();
         }
     }

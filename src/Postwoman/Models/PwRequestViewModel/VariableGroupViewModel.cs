@@ -47,6 +47,21 @@ public class VariableGroupViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
+    private VariableViewModel _selectedVariable;
+
+    public VariableViewModel SelectedVariable
+    {
+        get
+        {
+            return _selectedVariable;
+        }
+        set
+        {
+            _selectedVariable = value;
+            OnPropertyChanged();
+        }
+    }
+
     public VariableGroupViewModel Clone(string newName)
     {
         return new VariableGroupViewModel

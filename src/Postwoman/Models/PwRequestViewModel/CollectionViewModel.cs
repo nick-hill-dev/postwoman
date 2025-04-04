@@ -168,8 +168,9 @@ public class CollectionViewModel : INotifyPropertyChanged
                 Variables = [..g.Variables.Select(v => new Variable
                 {
                     Name = v.Name,
-                    Value = v.Value,
-                    Source = v.Source
+                    Value = v.Source == "Temporary" ? null: v.Value,
+                    Source = v.Source,
+                    EnvironmentVariableName = v.EnvironmentVariableName
                 })]
             })],
             Environments = [..Environments.Select(e => new EnvironmentInfo

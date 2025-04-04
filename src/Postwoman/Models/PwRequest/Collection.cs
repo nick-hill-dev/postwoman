@@ -20,7 +20,7 @@ public class Collection
 
     [Obsolete("Don't use this. It remains in place to support upgrading older files that use the old format.")]
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-    public List<Variable> Variables { get; set; } = [];
+    public List<Variable> Variables { get; set; }
 
     public List<EnvironmentInfo> Environments { get; set; } = [];
 
@@ -90,7 +90,8 @@ public class Collection
             {
                 Name = v.Name,
                 Value = v.Value,
-                Source = v.Source
+                Source = v.Source,
+                EnvironmentVariableName = v.EnvironmentVariableName
             })]
         }));
 

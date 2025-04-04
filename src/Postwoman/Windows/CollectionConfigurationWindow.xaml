@@ -82,7 +82,6 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
-                            <RowDefinition Height="5" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
@@ -90,7 +89,7 @@
                         <TextBox Margin="62,9,5,0" Text="{Binding SelectedVariableGroup.Name, Mode=TwoWay}" VerticalAlignment="Top"/>
                         <Label Content="Inherits:" HorizontalAlignment="Left" Margin="5,28,0,0" VerticalAlignment="Top"/>
                         <ComboBox Margin="62,30,5,0" VerticalAlignment="Top" ItemsSource="{Binding VariableGroups}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedVariableGroup.Inherits, Mode=TwoWay}"/>
-                        <DataGrid Margin="5,57,5,5" AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding SelectedVariableGroup.Variables}" CanUserAddRows="True" CanUserDeleteRows="True" d:ItemsSource="{d:SampleData ItemCount=15}">
+                        <DataGrid Margin="5,57,5,5" AutoGenerateColumns="False" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" ItemsSource="{Binding SelectedVariableGroup.Variables}" SelectedItem="{Binding SelectedVariableGroup.SelectedVariable, Mode=TwoWay}" CanUserAddRows="True" CanUserDeleteRows="True" d:ItemsSource="{d:SampleData ItemCount=15}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Name}"/>
                                 <DataGridTextColumn Header="Value" Width="6*" Binding="{Binding Value}"/>
@@ -98,18 +97,25 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <GridSplitter Grid.Row="1" ResizeDirection="Rows" VerticalAlignment="Stretch"/>
-
-                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" DataContext="{Binding SelectedVariableGroup.SelectedVariable}">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
                             <Label Content="Source:"/>
                             <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Source, Mode=TwoWay}">
                                 <ComboBoxItem Tag="Temporary" Content="Temporary" />
                                 <ComboBoxItem Tag="Collection" Content="Collection" />
                                 <ComboBoxItem Tag="EnvironmentVariable" Content="Environment Variable" />
                             </ComboBox>
-                            <StackPanel Grid.Row="2" Orientation="Horizontal" Visibility="{Binding Source, Converter={StaticResource EqualsToVisibilityConverter}, ConverterParameter=EnvironmentVariable}">
-                                <Label Content="Environment Variable Name:"/>
-                                <TextBox Text="{Binding SourceDetails, Mode=TwoWay}" Width="200"/>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding Source, Converter={StaticResource EqualsToVisibilityConverter}, ConverterParameter=EnvironmentVariable}">
+                                <Label Content="Environment variable name:"/>
+                                <TextBox Text="{Binding EnvironmentVariableName, Mode=TwoWay}" Width="200"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>

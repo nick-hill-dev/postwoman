@@ -131,7 +131,17 @@
                     </ListBox.ItemTemplate>
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem x:Name="NewRequestMenuItem" Header="_New Request" Click="NewRequestMenuItem_Click"/>
+                            <MenuItem x:Name="NewRequestMenuItem" Header="_New Request" Click="NewRequestMenuItem_Click">
+                                <MenuItem.Style>
+                                    <Style TargetType="MenuItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </MenuItem.Style>
+                            </MenuItem>
                             <MenuItem x:Name="DeleteRequestMenuItem" Header="_Delete Request" Click="DeleteRequestMenuItem_Click">
                                 <MenuItem.Style>
                                     <Style TargetType="MenuItem">
