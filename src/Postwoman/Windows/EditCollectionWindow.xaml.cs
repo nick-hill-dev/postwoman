@@ -1,4 +1,4 @@
-﻿using Postwoman.Models.PwRequest;
+﻿using Postwoman.Models.PwRequestViewModel;
 using System.Windows;
 
 namespace Postwoman.Windows;

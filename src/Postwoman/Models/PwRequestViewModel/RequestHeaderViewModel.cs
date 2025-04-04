@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Postwoman.Models.PwRequest;
+namespace Postwoman.Models.PwRequestViewModel;
 
-public class ServerViewModel : INotifyPropertyChanged
+public class RequestHeaderViewModel : INotifyPropertyChanged
 {
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -23,17 +23,17 @@ public class ServerViewModel : INotifyPropertyChanged
         }
     }
 
-    private string _baseUrl = string.Empty;
+    private string _value = string.Empty;
 
-    public string BaseUrl
+    public string Value
     {
         get
         {
-            return _baseUrl;
+            return _value;
         }
         set
         {
-            _baseUrl = value;
+            _value = value;
             OnPropertyChanged();
         }
     }

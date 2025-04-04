@@ -1,10 +1,10 @@
-﻿using Postwoman.Models.PwRequest2;
+﻿using Postwoman.Models.PwRequest;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Postwoman.Models.PwRequest;
+namespace Postwoman.Models.PwRequestViewModel;
 
 public class CollectionViewModel : INotifyPropertyChanged
 {
@@ -156,39 +156,39 @@ public class CollectionViewModel : INotifyPropertyChanged
         return new Collection
         {
             Name = Name,
-            Servers = [.. Servers.Select(s => new PwRequest2.Server
+            Servers = [.. Servers.Select(s => new Server
             {
                 Name = s.Name,
                 BaseUrl = s.BaseUrl
             })],
-            VariableGroups = [..VariableGroups.Select(g => new PwRequest2.VariableGroup
+            VariableGroups = [..VariableGroups.Select(g => new VariableGroup
             {
                 Name = g.Name,
                 Inherits = g.Inherits?.Name,
-                Variables = [..g.Variables.Select(v => new PwRequest2.Variable
+                Variables = [..g.Variables.Select(v => new Variable
                 {
                     Name = v.Name,
                     Value = v.Value,
                     Source = v.Source
                 })]
             })],
-            Environments = [..Environments.Select(e => new PwRequest2.EnvironmentInfo
+            Environments = [..Environments.Select(e => new EnvironmentInfo
             {
                 Name = e.Name,
                 Server = e.Server?.Name,
                 VariableGroup = e.VariableGroup?.Name
             })],
-            Headers = [..Headers.Select(h => new PwRequest2.RequestHeader
+            Headers = [..Headers.Select(h => new RequestHeader
             {
                 Name = h.Name,
                 Value = h.Value
             })],
-            Requests = [..Requests.Select(r => new PwRequest2.Request
+            Requests = [..Requests.Select(r => new Request
             {
                 Name = r.Name,
                 Method = r.Method,
                 Url = r.Url,
-                Authorization = r.Authorization == null ? null : new PwRequest2.RequestAuthorization
+                Authorization = r.Authorization == null ? null : new PwRequest.RequestAuthorization
                 {
                     Type = r.Authorization.Type,
                     BasicUserName = r.Authorization.BasicUserName,
@@ -197,12 +197,12 @@ public class CollectionViewModel : INotifyPropertyChanged
                     ApiKeyValue = r.Authorization.ApiKeyValue,
                     BearerToken = r.Authorization.BearerToken
                 },
-                Headers = [..r.Headers.Select(h => new PwRequest2.RequestHeader
+                Headers = [..r.Headers.Select(h => new RequestHeader
                 {
                     Name = h.Name,
                     Value = h.Value
                 })],
-                Query = [..r.Query.Select(q => new PwRequest2.RequestParameter
+                Query = [..r.Query.Select(q => new RequestParameter
                 {
                     Name = q.Name,
                     Value = q.Value

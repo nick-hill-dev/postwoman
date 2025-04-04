@@ -1,4 +1,4 @@
-﻿using Postwoman.Models.PwRequest;
+﻿using Postwoman.Models.PwRequestViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;

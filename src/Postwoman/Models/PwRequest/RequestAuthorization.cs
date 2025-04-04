@@ -1,106 +1,25 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using Newtonsoft.Json;
 
 namespace Postwoman.Models.PwRequest;
 
-public class RequestAuthorization : INotifyPropertyChanged
+public class RequestAuthorization
 {
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public string Type { get; set; }
 
-    private string _type = "None";
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public string BasicUserName { get; set; }
 
-    public string Type
-    {
-        get
-        {
-            return _type;
-        }
-        set
-        {
-            _type = value;
-            OnPropertyChanged();
-        }
-    }
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public string BasicPassword { get; set; }
 
-    private string _basicUserName;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public string ApiKeyHeaderName { get; set; }
 
-    public string BasicUserName
-    {
-        get
-        {
-            return _basicUserName;
-        }
-        set
-        {
-            _basicUserName = value;
-            OnPropertyChanged();
-        }
-    }
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public string ApiKeyValue { get; set; }
 
-    private string _basicPassword;
-
-    public string BasicPassword
-    {
-        get
-        {
-            return _basicPassword;
-        }
-        set
-        {
-            _basicPassword = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private string _apiKeyHeaderName = "x-api-key";
-
-    public string ApiKeyHeaderName
-    {
-        get
-        {
-            return _apiKeyHeaderName;
-        }
-        set
-        {
-            _apiKeyHeaderName = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private string _apiKeyValue;
-
-    public string ApiKeyValue
-    {
-        get
-        {
-            return _apiKeyValue;
-        }
-        set
-        {
-            _apiKeyValue = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private string _bearerToken;
-
-    public string BearerToken
-    {
-        get
-        {
-            return _bearerToken;
-        }
-        set
-        {
-            _bearerToken = value;
-            OnPropertyChanged();
-        }
-    }
-
-    protected void OnPropertyChanged([CallerMemberName] string name = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public string BearerToken { get; set; }
 
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Postwoman.Models.PwRequest;
+namespace Postwoman.Models.PwRequestViewModel;
 
 public class EnvironmentViewModel : INotifyPropertyChanged
 {

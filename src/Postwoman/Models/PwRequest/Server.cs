@@ -1,10 +1,10 @@
 ﻿namespace Postwoman.Models.PwRequest;
 
-public class ResponseHeaderViewModel
+public class Server
 {
 
     public string Name { get; set; }
 
-    public string Value { get; set; }
+    public string BaseUrl { get; set; }
 
 }

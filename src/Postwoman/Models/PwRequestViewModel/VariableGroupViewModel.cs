@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Postwoman.Models.PwRequest;
+namespace Postwoman.Models.PwRequestViewModel;
 
 public class VariableGroupViewModel : INotifyPropertyChanged
 {

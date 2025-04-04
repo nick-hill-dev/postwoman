@@ -1,4 +1,4 @@
-﻿namespace Postwoman.Models.PwRequest2;
+﻿namespace Postwoman.Models.PwRequest;
 
 public class EnvironmentInfo
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Postwoman.Models.PwRequest;
+namespace Postwoman.Models.PwRequestViewModel;
 
 public class ResponseViewModel
 {

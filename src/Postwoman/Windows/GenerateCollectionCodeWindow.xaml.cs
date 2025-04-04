@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Postwoman.CodeGeneration.Swagger;
-using Postwoman.Models.PwRequest;
+using Postwoman.Models.PwRequestViewModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;

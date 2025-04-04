@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Postwoman.Models.PwRequest;
+using Postwoman.Models.PwRequestViewModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

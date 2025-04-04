@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Postwoman.Models.PwRequest;
+using Postwoman.Models.PwRequestViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
-namespace Postwoman.Models.PwRequest2;
+namespace Postwoman.Models.PwRequest;
 
 public class Collection
 {
@@ -129,7 +129,7 @@ public class Collection
                 Name = r.Name,
                 Method = r.Method,
                 Url = r.Url,
-                Authorization = r.Authorization == null ? null : new PwRequest.RequestAuthorization
+                Authorization = r.Authorization == null ? null : new PwRequestViewModel.RequestAuthorization
                 {
                     Type = r.Authorization.Type,
                     BasicUserName = r.Authorization.BasicUserName,

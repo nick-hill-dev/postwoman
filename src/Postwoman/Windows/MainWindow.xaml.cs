@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Postwoman.Importers;
 using Postwoman.Models.PwRequest;
-using Postwoman.Models.PwRequest2;
+using Postwoman.Models.PwRequestViewModel;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;

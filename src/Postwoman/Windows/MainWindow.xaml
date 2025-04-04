@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:Postwoman.WpfValueConverters"
         xmlns:local="clr-namespace:Postwoman.Windows" xmlns:controls="clr-namespace:Postwoman.Controls"
-        xmlns:pwrequest="clr-namespace:Postwoman.Models.PwRequest" d:DataContext="{d:DesignInstance Type=pwrequest:CollectionsViewModel, IsDesignTimeCreatable=True}"
+        xmlns:pwrequest="clr-namespace:Postwoman.Models.PwRequestViewModel" d:DataContext="{d:DesignInstance Type=pwrequest:CollectionsViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Title="Postwoman" Height="600" Width="1024" WindowStartupLocation="CenterScreen">
     <Window.Resources>

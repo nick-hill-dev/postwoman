@@ -1,7 +1,7 @@
 ﻿using Postwoman.CodeGeneration;
 using Postwoman.CodeGeneration.PowerShell;
 using Postwoman.CodeGeneration.Swagger;
-using Postwoman.Models.PwRequest;
+using Postwoman.Models.PwRequestViewModel;
 using System.Windows;
 using System.Windows.Controls;
 

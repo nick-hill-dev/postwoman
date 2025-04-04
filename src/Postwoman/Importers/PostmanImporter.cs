@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Postwoman.Models.PostmanCollection;
-using Postwoman.Models.PwRequest;
+using Postwoman.Models.PwRequestViewModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Postwoman.Models.PwRequest2;
+namespace Postwoman.Models.PwRequest;
 
 public class Request
 {
