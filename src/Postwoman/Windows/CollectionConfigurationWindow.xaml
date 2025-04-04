@@ -1,9 +1,9 @@
-﻿<Window x:Class="Postwoman.CollectionConfigurationWindow"
+﻿<Window x:Class="Postwoman.Windows.CollectionConfigurationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Postwoman"
+        xmlns:local="clr-namespace:Postwoman.Windows"
         xmlns:pwrequest="clr-namespace:Postwoman.Models.PwRequest" d:DataContext="{d:DesignInstance Type=pwrequest:CollectionViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Title="Collection Servers" Height="450" Width="800" WindowStartupLocation="CenterScreen">

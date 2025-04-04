@@ -5,7 +5,7 @@ using Postwoman.Models.PwRequest;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Postwoman;
+namespace Postwoman.Windows;
 
 /// <summary>
 /// Interaction logic for GenerateRequestCodeWindow.xaml

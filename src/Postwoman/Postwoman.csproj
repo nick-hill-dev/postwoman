@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>ProgramIcon.ico</ApplicationIcon>
@@ -17,13 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="CollectionConfigurationWindow.xaml.cs">
+    <Compile Update="Windows\CollectionConfigurationWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GenerateCollectionCodeWindow.xaml.cs">
+    <Compile Update="Windows\GenerateCollectionCodeWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GenerateRequestCodeWindow.xaml.cs">
+    <Compile Update="Windows\GenerateRequestCodeWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

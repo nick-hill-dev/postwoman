@@ -8,7 +8,7 @@ using System.Windows;
 using System.Linq;
 using Postwoman.Models.Swagger;
 
-namespace Postwoman;
+namespace Postwoman.Windows;
 
 /// <summary>
 /// Interaction logic for GenerateCollectionCodeWindow.xaml

@@ -1,7 +1,7 @@
 ﻿using Postwoman.Models.PwRequest;
 using System.Windows;
 
-namespace Postwoman;
+namespace Postwoman.Windows;
 
 /// <summary>
 /// Interaction logic for CollectionConfigurationWindow.xaml

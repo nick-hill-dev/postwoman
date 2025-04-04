@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Postwoman;
+namespace Postwoman.Windows;
 
 /// <summary>
 /// Interaction logic for NewCollectionWindow.xaml
