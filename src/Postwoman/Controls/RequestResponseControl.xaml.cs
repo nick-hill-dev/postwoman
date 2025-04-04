@@ -64,8 +64,8 @@ namespace Postwoman.Controls
                         break;
 
                     case "ApiKey":
-                        var apiKey = VariableReplacer.Replace(selectedRequest.Authorization.ApiKeyHeaderName, variables);
-                        request.Headers.TryAddWithoutValidation(apiKey, selectedRequest.Authorization.ApiKeyValue);
+                        var apiKey = VariableReplacer.Replace(selectedRequest.Authorization.ApiKeyValue, variables);
+                        request.Headers.TryAddWithoutValidation(selectedRequest.Authorization.ApiKeyHeaderName, selectedRequest.Authorization.ApiKeyValue);
                         break;
 
                     case "Bearer":
