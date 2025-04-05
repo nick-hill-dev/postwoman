@@ -24,7 +24,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
             Paths = new ApiPaths()
         };
 
-        var variables = VariableCompiler.Compile(collection.SelectedEnvironment.VariableGroup);
+        var variables = VariableCompiler.Compile(collection.SelectedEnvironment?.VariableGroup ?? new());
 
         AddServers(collection, model);
         AddSecurity(request, model);
@@ -71,7 +71,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
             }
         };
 
-        if (request.Authorization.Type == "Basic")
+        if (request.Authorization?.Type == "Basic")
         {
             model.Components.SecuritySchemes.Add(
                 "BasicAuth",
@@ -83,7 +83,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
                 });
         }
 
-        if (request.Authorization.Type == "ApiKey")
+        if (request.Authorization?.Type == "ApiKey")
         {
             model.Components.SecuritySchemes.Add(
                 "ApiKeyAuth",
@@ -96,7 +96,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
                 });
         }
 
-        if (request.Authorization.Type == "Bearer")
+        if (request.Authorization?.Type == "Bearer")
         {
             model.Components.SecuritySchemes.Add(
                 "BearerAuth",
@@ -192,7 +192,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
 
     private static void AddOperationSecurity(RequestViewModel request, ApiOperation operation)
     {
-        if (request.Authorization.Type == "Basic")
+        if (request.Authorization?.Type == "Basic")
         {
             operation.Security = new List<ApiOperationSecurity>
             {
@@ -203,7 +203,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
             };
         }
 
-        if (request.Authorization.Type == "ApiKey")
+        if (request.Authorization?.Type == "ApiKey")
         {
             operation.Security = new List<ApiOperationSecurity>
             {
@@ -214,7 +214,7 @@ public class SwaggerCodeGenerator : ICodeGenerator
             };
         }
 
-        if (request.Authorization.Type == "Bearer")
+        if (request.Authorization?.Type == "Bearer")
         {
             operation.Security = new List<ApiOperationSecurity>
             {
