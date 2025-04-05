@@ -10,6 +10,7 @@
         Title="Postwoman" Height="600" Width="1024" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converters:RequestMethodColorSelector x:Key="RequestMethodColorSelector"/>
+        <converters:NotNullBooleanConverter x:Key="NotNullBooleanConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -20,95 +21,25 @@
         <Menu>
             <MenuItem Header="_File">
                 <MenuItem x:Name="LoadCollectionMenuItem" Header="_Load Collection..." Click="LoadCollectionMenuItem_Click"/>
-                <MenuItem x:Name="SaveCollectionMenuItem" Header="_Save Collection..." Click="SaveCollectionMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
+                <MenuItem x:Name="SaveCollectionMenuItem" Header="_Save Collection..." Click="SaveCollectionMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
                 <Separator/>
-                <MenuItem x:Name="ImportRequestMenuItem" Header="_Import Request..." Click="ImportRequestMenuItem_Click"/>
-                <MenuItem x:Name="ExportRequestMenuItem" Header="_Export Request..." Click="ExportRequestMenuItem_Click"/>
+                <MenuItem x:Name="ImportRequestMenuItem" Header="_Import Request..." Click="ImportRequestMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
+                <MenuItem x:Name="ExportRequestMenuItem" Header="_Export Request..." Click="ExportRequestMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
                 <Separator/>
                 <MenuItem x:Name="ImportPostmanCollectionMenuItem" Header="Import _Postman Collection..." Click="ImportPostmanCollectionMenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="_Collection">
                 <MenuItem x:Name="NewCollectionMenuItem" Header="_New Collection..." Click="NewCollectionMenuItem_Click"/>
-                <MenuItem x:Name="RenameCollectionMenuItem" Header="_Rename Collection..." Click="RenameCollectionMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
-                <MenuItem x:Name="DeleteCollectionMenuItem" Header="_Delete Collection" Click="DeleteCollectionMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
+                <MenuItem x:Name="RenameCollectionMenuItem" Header="_Rename Collection..." Click="RenameCollectionMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
+                <MenuItem x:Name="DeleteCollectionMenuItem" Header="_Delete Collection" Click="DeleteCollectionMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
                 <Separator/>
-                <MenuItem x:Name="SortCollectionMenuItem" Header="_Sort" Click="SortCollectionMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
+                <MenuItem x:Name="SortCollectionMenuItem" Header="_Sort" Click="SortCollectionMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
                 <Separator/>
-                <MenuItem x:Name="EditCollectionConfigurationMenuItem" Header="Collection _Configuration..." Click="EditCollectionConfigurationMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
+                <MenuItem x:Name="EditCollectionConfigurationMenuItem" Header="Collection _Configuration..." Click="EditCollectionConfigurationMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
             </MenuItem>
             <MenuItem Header="_Code">
-                <MenuItem x:Name="GenerateCodeForRequestMenuItem" Header="Generate For Request..." Click="GenerateCodeForRequestMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
-                <MenuItem x:Name="GenerateCodeForCollectionMenuItem" Header="Generate For Collection..." Click="GenerateCodeForCollectionMenuItem_Click">
-                    <MenuItem.Style>
-                        <Style TargetType="MenuItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </MenuItem.Style>
-                </MenuItem>
+                <MenuItem x:Name="GenerateCodeForRequestMenuItem" Header="Generate For Request..." Click="GenerateCodeForRequestMenuItem_Click" IsEnabled="{Binding SelectedRequest, Converter={StaticResource NotNullBooleanConverter}}" />
+                <MenuItem x:Name="GenerateCodeForCollectionMenuItem" Header="Generate For Collection..." Click="GenerateCodeForCollectionMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
@@ -131,52 +62,12 @@
                     </ListBox.ItemTemplate>
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem x:Name="NewRequestMenuItem" Header="_New Request" Click="NewRequestMenuItem_Click">
-                                <MenuItem.Style>
-                                    <Style TargetType="MenuItem">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedCollection}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </MenuItem.Style>
-                            </MenuItem>
-                            <MenuItem x:Name="DeleteRequestMenuItem" Header="_Delete Request" Click="DeleteRequestMenuItem_Click">
-                                <MenuItem.Style>
-                                    <Style TargetType="MenuItem">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </MenuItem.Style>
-                            </MenuItem>
+                            <MenuItem x:Name="NewRequestMenuItem" Header="_New Request" Click="NewRequestMenuItem_Click" IsEnabled="{Binding SelectedCollection, Converter={StaticResource NotNullBooleanConverter}}" />
+                            <MenuItem x:Name="DeleteRequestMenuItem" Header="_Delete Request" Click="DeleteRequestMenuItem_Click" IsEnabled="{Binding SelectedRequest, Converter={StaticResource NotNullBooleanConverter}}" />
                             <Separator/>
-                            <MenuItem x:Name="DuplicateRequestMenuItem" Header="Duplicate Request" Click="DuplicateRequestMenuItem_Click">
-                                <MenuItem.Style>
-                                    <Style TargetType="MenuItem">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </MenuItem.Style>
-                            </MenuItem>
+                            <MenuItem x:Name="DuplicateRequestMenuItem" Header="Duplicate Request" Click="DuplicateRequestMenuItem_Click" IsEnabled="{Binding SelectedRequest, Converter={StaticResource NotNullBooleanConverter}}" />
                             <Separator/>
-                            <MenuItem x:Name="ExperimentWithRequestMenuItem" Header="Playground..." Click="ExperimentWithRequestMenuItem_Click">
-                                <MenuItem.Style>
-                                    <Style TargetType="MenuItem">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </MenuItem.Style>
-                            </MenuItem>
+                            <MenuItem x:Name="ExperimentWithRequestMenuItem" Header="Playground..." Click="ExperimentWithRequestMenuItem_Click" IsEnabled="{Binding SelectedRequest, Converter={StaticResource NotNullBooleanConverter}}" />
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
@@ -188,16 +79,7 @@
                 <ComboBox Height="Auto" Width="200" FontSize="16" FontWeight="Bold" ItemsSource="{Binding SelectedCollection.Environments}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedCollection.SelectedEnvironment, Mode=TwoWay}"/>
             </StackPanel>
 
-            <TabControl x:Name="RequestsTabControl" Grid.Column="2" Margin="5,40,10,10">
-                <TabControl.Style>
-                    <Style TargetType="TabControl">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedCollection.SelectedRequest}" Value="{x:Null}">
-                                <Setter Property="IsEnabled" Value="False"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TabControl.Style>
+            <TabControl x:Name="RequestsTabControl" Grid.Column="2" Margin="5,40,10,10" IsEnabled="{Binding SelectedRequest, Converter={StaticResource NotNullBooleanConverter}}">
                 <TabItem Header="Request">
                     <controls:RequestResponseControl></controls:RequestResponseControl>
                 </TabItem>

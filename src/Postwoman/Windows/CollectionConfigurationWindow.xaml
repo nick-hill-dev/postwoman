@@ -10,6 +10,8 @@
         Title="Collection Servers" Height="550" Width="800" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converters:EqualsToVisibilityConverter x:Key="EqualsToVisibilityConverter"/>
+        <converters:NullToVisibilityCollapsedConverter x:Key="NullToVisibilityCollapsedConverter"/>
+        <converters:NotNullBooleanConverter x:Key="NotNullBooleanConverter"/>
     </Window.Resources>
     <TabControl Margin="10">
         <TabItem Header="Servers">
@@ -39,29 +41,9 @@
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="NewVariableGroupMenuItem" Header="_New" Click="NewVariableGroupMenuItem_Click"/>
-                            <MenuItem x:Name="DeleteVariableGroupMenuItem" Header="_Delete" Click="DeleteVariableGroupMenuItem_Click">
-                                <MenuItem.Style>
-                                    <Style TargetType="MenuItem">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedVariableGroup}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </MenuItem.Style>
-                            </MenuItem>
+                            <MenuItem x:Name="DeleteVariableGroupMenuItem" Header="_Delete" Click="DeleteVariableGroupMenuItem_Click" IsEnabled="{Binding SelectedVariableGroup, Converter={StaticResource NotNullBooleanConverter}}" />
                             <Separator/>
-                            <MenuItem x:Name="DuplicateVariableGroupMenuItem" Header="Duplicate" Click="DuplicateVariableGroupMenuItem_Click">
-                                <MenuItem.Style>
-                                    <Style TargetType="MenuItem">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedVariableGroup}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </MenuItem.Style>
-                            </MenuItem>
+                            <MenuItem x:Name="DuplicateVariableGroupMenuItem" Header="Duplicate" Click="DuplicateVariableGroupMenuItem_Click" IsEnabled="{Binding SelectedVariableGroup, Converter={StaticResource NotNullBooleanConverter}}" />
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
@@ -97,16 +79,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" DataContext="{Binding SelectedVariableGroup.SelectedVariable}">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" DataContext="{Binding SelectedVariable}" Visibility="{Binding ., Converter={StaticResource NullToVisibilityCollapsedConverter}}">
                             <Label Content="Source:"/>
                             <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Source, Mode=TwoWay}">
                                 <ComboBoxItem Tag="Temporary" Content="Temporary" />
@@ -135,34 +108,14 @@
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="NewEnvironmentMenuItem" Header="_New" Click="NewEnvironmentMenuItem_Click"/>
-                            <MenuItem x:Name="DeleteEnvironmentMenuItem" Header="_Delete" Click="DeleteEnvironmentMenuItem_Click">
-                                <MenuItem.Style>
-                                    <Style TargetType="MenuItem">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedEnvironment}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </MenuItem.Style>
-                            </MenuItem>
+                            <MenuItem x:Name="DeleteEnvironmentMenuItem" Header="_Delete" Click="DeleteEnvironmentMenuItem_Click" IsEnabled="{Binding SelectedEnvironment, Converter={StaticResource NotNullBooleanConverter}}" />
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
 
                 <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
 
-                <Grid Grid.Column="2">
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedEnvironment}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
-
+                <Grid Grid.Column="2" IsEnabled="{Binding SelectedEnvironment, Converter={StaticResource NotNullBooleanConverter}}">
                     <Label Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                     <TextBox Margin="10,41,10,0" Text="{Binding SelectedEnvironment.Name, Mode=TwoWay}" VerticalAlignment="Top"/>
                     <Label Content="Server:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,64,0,0"/>
