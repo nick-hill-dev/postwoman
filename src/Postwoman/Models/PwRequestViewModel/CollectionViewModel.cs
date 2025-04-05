@@ -15,10 +15,7 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public string Name
     {
-        get
-        {
-            return _name;
-        }
+        get => _name;
         set
         {
             _name = value;
@@ -30,10 +27,7 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public ObservableCollection<ServerViewModel> Servers
     {
-        get
-        {
-            return _servers;
-        }
+        get => _servers;
         set
         {
             _servers = value;
@@ -45,10 +39,7 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public ObservableCollection<VariableGroupViewModel> VariableGroups
     {
-        get
-        {
-            return _variableGroups;
-        }
+        get => _variableGroups;
         set
         {
             _variableGroups = value;
@@ -60,14 +51,25 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public VariableGroupViewModel SelectedVariableGroup
     {
-        get
-        {
-            return _selectedVariableGroup;
-        }
+        get => _selectedVariableGroup;
         set
         {
-            _selectedVariableGroup = value;
-            OnPropertyChanged();
+            if (_selectedVariableGroup != value)
+            {
+                if (_selectedVariableGroup != null)
+                {
+                    _selectedVariableGroup.PropertyChanged -= SelectedVariableGroup_PropertyChanged;
+                }
+
+                _selectedVariableGroup = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedVariable));
+
+                if (_selectedVariableGroup != null)
+                {
+                    _selectedVariableGroup.PropertyChanged += SelectedVariableGroup_PropertyChanged;
+                }
+            }
         }
     }
 
@@ -75,10 +77,7 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public ObservableCollection<EnvironmentViewModel> Environments
     {
-        get
-        {
-            return _environments;
-        }
+        get => _environments;
         set
         {
             _environments = value;
@@ -90,10 +89,7 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public ObservableCollection<RequestHeaderViewModel> Headers
     {
-        get
-        {
-            return _headers;
-        }
+        get => _headers;
         set
         {
             _headers = value;
@@ -105,10 +101,7 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public ObservableCollection<RequestViewModel> Requests
     {
-        get
-        {
-            return _requests;
-        }
+        get => _requests;
         set
         {
             _requests = value;
@@ -120,14 +113,14 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public RequestViewModel SelectedRequest
     {
-        get
-        {
-            return _selectedRequest;
-        }
+        get => _selectedRequest;
         set
         {
-            _selectedRequest = value;
-            OnPropertyChanged();
+            if (_selectedRequest != value)
+            {
+                _selectedRequest = value;
+                OnPropertyChanged();
+            }
         }
     }
 
@@ -135,14 +128,21 @@ public class CollectionViewModel : INotifyPropertyChanged
 
     public EnvironmentViewModel SelectedEnvironment
     {
-        get
-        {
-            return _selectedEnvironment;
-        }
+        get => _selectedEnvironment;
         set
         {
             _selectedEnvironment = value;
             OnPropertyChanged();
+        }
+    }
+
+    public VariableViewModel SelectedVariable => SelectedVariableGroup?.SelectedVariable;
+
+    private void SelectedVariableGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(VariableGroupViewModel.SelectedVariable))
+        {
+            OnPropertyChanged(nameof(SelectedVariable));
         }
     }
 

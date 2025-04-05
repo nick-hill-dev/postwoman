@@ -12,10 +12,7 @@ public class ServerViewModel : INotifyPropertyChanged
 
     public string Name
     {
-        get
-        {
-            return _name;
-        }
+        get => _name;
         set
         {
             _name = value;
@@ -27,10 +24,7 @@ public class ServerViewModel : INotifyPropertyChanged
 
     public string BaseUrl
     {
-        get
-        {
-            return _baseUrl;
-        }
+        get => _baseUrl;
         set
         {
             _baseUrl = value;

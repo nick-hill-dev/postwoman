@@ -12,10 +12,7 @@ public class VariableViewModel : INotifyPropertyChanged
 
     public string Name
     {
-        get
-        {
-            return _name;
-        }
+        get => _name;
         set
         {
             _name = value;
@@ -27,10 +24,7 @@ public class VariableViewModel : INotifyPropertyChanged
 
     public string Value
     {
-        get
-        {
-            return _value;
-        }
+        get => _value;
         set
         {
             _value = value;
@@ -42,10 +36,7 @@ public class VariableViewModel : INotifyPropertyChanged
 
     public string Source
     {
-        get
-        {
-            return _source;
-        }
+        get => _source;
         set
         {
             _source = value;
@@ -57,10 +48,7 @@ public class VariableViewModel : INotifyPropertyChanged
 
     public string EnvironmentVariableName
     {
-        get
-        {
-            return _environmentVariableName;
-        }
+        get => _environmentVariableName;
         set
         {
             _environmentVariableName = value;

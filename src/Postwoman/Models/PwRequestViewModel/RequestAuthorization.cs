@@ -12,10 +12,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     public string Type
     {
-        get
-        {
-            return _type;
-        }
+        get => _type;
         set
         {
             _type = value;
@@ -27,10 +24,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     public string BasicUserName
     {
-        get
-        {
-            return _basicUserName;
-        }
+        get => _basicUserName;
         set
         {
             _basicUserName = value;
@@ -42,10 +36,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     public string BasicPassword
     {
-        get
-        {
-            return _basicPassword;
-        }
+        get => _basicPassword;
         set
         {
             _basicPassword = value;
@@ -57,10 +48,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     public string ApiKeyHeaderName
     {
-        get
-        {
-            return _apiKeyHeaderName;
-        }
+        get => _apiKeyHeaderName;
         set
         {
             _apiKeyHeaderName = value;
@@ -72,10 +60,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     public string ApiKeyValue
     {
-        get
-        {
-            return _apiKeyValue;
-        }
+        get => _apiKeyValue;
         set
         {
             _apiKeyValue = value;
@@ -87,10 +72,7 @@ public class RequestAuthorization : INotifyPropertyChanged
 
     public string BearerToken
     {
-        get
-        {
-            return _bearerToken;
-        }
+        get => _bearerToken;
         set
         {
             _bearerToken = value;

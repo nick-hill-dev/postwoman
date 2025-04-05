@@ -14,10 +14,7 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public string Name
     {
-        get
-        {
-            return _name;
-        }
+        get => _name;
         set
         {
             _name = value;
@@ -29,10 +26,7 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public string Method
     {
-        get
-        {
-            return _method;
-        }
+        get => _method;
         set
         {
             _method = value;
@@ -44,10 +38,7 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public string Url
     {
-        get
-        {
-            return _url;
-        }
+        get => _url;
         set
         {
             _url = value;
@@ -59,10 +50,7 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public RequestAuthorization Authorization
     {
-        get
-        {
-            return _authorization;
-        }
+        get => _authorization;
         set
         {
             _authorization = value;
@@ -70,18 +58,15 @@ public class RequestViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<RequestHeaderViewModel> Headers { get; set; } = new();
+    public ObservableCollection<RequestHeaderViewModel> Headers { get; set; } = [];
 
-    public ObservableCollection<RequestParameterViewModel> Query { get; set; } = new();
+    public ObservableCollection<RequestParameterViewModel> Query { get; set; } = [];
 
     private string _body = string.Empty;
 
     public string Body
     {
-        get
-        {
-            return _body;
-        }
+        get => _body;
         set
         {
             _body = value;
@@ -93,10 +78,7 @@ public class RequestViewModel : INotifyPropertyChanged
 
     public ResponseViewModel LatestResponse
     {
-        get
-        {
-            return _latestResponse;
-        }
+        get => _latestResponse;
         set
         {
             _latestResponse = value;

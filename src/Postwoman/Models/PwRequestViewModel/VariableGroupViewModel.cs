@@ -14,10 +14,7 @@ public class VariableGroupViewModel : INotifyPropertyChanged
 
     public string Name
     {
-        get
-        {
-            return _name;
-        }
+        get => _name;
         set
         {
             _name = value;
@@ -29,10 +26,7 @@ public class VariableGroupViewModel : INotifyPropertyChanged
 
     public VariableGroupViewModel Inherits
     {
-        get
-        {
-            return _inherits;
-        }
+        get => _inherits;
         set
         {
             _inherits = value;
@@ -42,24 +36,24 @@ public class VariableGroupViewModel : INotifyPropertyChanged
 
     public ObservableCollection<VariableViewModel> Variables { get; set; } = new();
 
-    protected void OnPropertyChanged([CallerMemberName] string name = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
-
     private VariableViewModel _selectedVariable;
 
     public VariableViewModel SelectedVariable
     {
-        get
-        {
-            return _selectedVariable;
-        }
+        get => _selectedVariable;
         set
         {
-            _selectedVariable = value;
-            OnPropertyChanged();
+            if (_selectedVariable != value)
+            {
+                _selectedVariable = value;
+                OnPropertyChanged();
+            }
         }
+    }
+
+    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
     public VariableGroupViewModel Clone(string newName)
@@ -68,11 +62,11 @@ public class VariableGroupViewModel : INotifyPropertyChanged
         {
             Name = newName,
             Inherits = Inherits,
-            Variables = new ObservableCollection<VariableViewModel>(Variables.Select(v => new VariableViewModel
+            Variables = [..Variables.Select(v => new VariableViewModel
             {
                 Name = v.Name,
                 Value = v.Value
-            }))
+            })]
         };
     }
 

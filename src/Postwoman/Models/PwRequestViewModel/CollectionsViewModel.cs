@@ -15,14 +15,35 @@ public class CollectionsViewModel : INotifyPropertyChanged
 
     public CollectionViewModel SelectedCollection
     {
-        get
-        {
-            return _selectedCollection;
-        }
+        get => _selectedCollection;
         set
         {
-            _selectedCollection = value;
-            OnPropertyChanged();
+            if (_selectedCollection != value)
+            {
+                if (_selectedCollection != null)
+                {
+                    _selectedCollection.PropertyChanged -= SelectedCollection_PropertyChanged;
+                }
+
+                _selectedCollection = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedRequest));
+
+                if (_selectedCollection != null)
+                {
+                    _selectedCollection.PropertyChanged += SelectedCollection_PropertyChanged;
+                }
+            }
+        }
+    }
+
+    public RequestViewModel SelectedRequest => SelectedCollection?.SelectedRequest;
+
+    private void SelectedCollection_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(CollectionViewModel.SelectedRequest))
+        {
+            OnPropertyChanged(nameof(SelectedRequest));
         }
     }
 

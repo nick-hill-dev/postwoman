@@ -1,14 +1,43 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Postwoman.Models.PwRequestViewModel;
 
-public class ResponseViewModel
+public class ResponseViewModel : INotifyPropertyChanged
 {
 
-    public ObservableCollection<ResponseHeaderViewModel> Headers { get; set; } = new();
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    public int StatusCode { get; set; }
+    public ObservableCollection<ResponseHeaderViewModel> Headers { get; set; } = [];
 
-    public string Body { get; set; }
+    private int _statusCode;
+
+    public int StatusCode
+    {
+        get => _statusCode;
+        set
+        {
+            _statusCode = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _body;
+
+    public string Body
+    {
+        get => _body;
+        set
+        {
+            _body = value;
+            OnPropertyChanged();
+        }
+    }
+
+    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
 
 }

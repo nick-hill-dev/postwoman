@@ -12,10 +12,7 @@ public class EnvironmentViewModel : INotifyPropertyChanged
 
     public string Name
     {
-        get
-        {
-            return _name;
-        }
+        get => _name;
         set
         {
             _name = value;
@@ -27,10 +24,7 @@ public class EnvironmentViewModel : INotifyPropertyChanged
 
     public ServerViewModel Server
     {
-        get
-        {
-            return _server;
-        }
+        get => _server;
         set
         {
             _server = value;
@@ -42,10 +36,7 @@ public class EnvironmentViewModel : INotifyPropertyChanged
 
     public VariableGroupViewModel VariableGroup
     {
-        get
-        {
-            return _variableGroup;
-        }
+        get => _variableGroup;
         set
         {
             _variableGroup = value;

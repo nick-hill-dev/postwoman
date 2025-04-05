@@ -12,10 +12,7 @@ public class RequestParameterViewModel : INotifyPropertyChanged
 
     public bool IsChecked
     {
-        get
-        {
-            return _isChecked;
-        }
+        get => _isChecked;
         set
         {
             _isChecked = value;
@@ -27,10 +24,7 @@ public class RequestParameterViewModel : INotifyPropertyChanged
 
     public string Name
     {
-        get
-        {
-            return _name;
-        }
+        get => _name;
         set
         {
             _name = value;
@@ -42,10 +36,7 @@ public class RequestParameterViewModel : INotifyPropertyChanged
 
     public string Value
     {
-        get
-        {
-            return _value;
-        }
+        get => _value;
         set
         {
             _value = value;
