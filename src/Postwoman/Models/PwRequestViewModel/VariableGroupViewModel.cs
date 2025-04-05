@@ -56,6 +56,20 @@ public class VariableGroupViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
+    public VariableViewModel Find(string name)
+    {
+        var variable = Variables.FirstOrDefault(v => v.Name == name);
+        if (variable != null)
+        {
+            return variable;
+        }
+        if (Inherits != null)
+        {
+            return Inherits.Find(name);
+        }
+        return null;
+    }
+
     public VariableGroupViewModel Clone(string newName)
     {
         return new VariableGroupViewModel

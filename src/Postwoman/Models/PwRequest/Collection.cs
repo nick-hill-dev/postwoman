@@ -24,8 +24,10 @@ public class Collection
 
     public List<EnvironmentInfo> Environments { get; set; } = [];
 
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public List<RequestHeader> Headers = [];
 
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public List<Request> Requests = [];
 
     private static readonly JsonSerializerSettings _serializationSettings = new()
@@ -36,7 +38,6 @@ public class Collection
         },
         Formatting = Formatting.Indented
     };
-
 
     public static Collection Load(string fileName)
     {
@@ -125,32 +126,7 @@ public class Collection
                 Name = h.Name,
                 Value = h.Value
             })],
-            Requests = [..Requests.Select(r => new RequestViewModel
-            {
-                Name = r.Name,
-                Method = r.Method,
-                Url = r.Url,
-                Authorization = r.Authorization == null ? null : new PwRequestViewModel.RequestAuthorization
-                {
-                    Type = r.Authorization.Type,
-                    BasicUserName = r.Authorization.BasicUserName,
-                    BasicPassword = r.Authorization.BasicPassword,
-                    ApiKeyHeaderName = r.Authorization.ApiKeyHeaderName,
-                    ApiKeyValue = r.Authorization.ApiKeyValue,
-                    BearerToken = r.Authorization.BearerToken
-                },
-                Headers = [..r.Headers.Select(h => new RequestHeaderViewModel
-                {
-                    Name = h.Name,
-                    Value = h.Value
-                })],
-                Query = [..r.Query.Select(q => new RequestParameterViewModel
-                {
-                    Name = q.Name,
-                    Value = q.Value
-                })],
-                Body = r.Body
-            })]
+            Requests = [..Requests.Select(r => r.ToViewModel())]
         };
     }
 

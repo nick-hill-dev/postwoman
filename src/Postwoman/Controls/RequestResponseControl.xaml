@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Postwoman.Controls"
+             xmlns:pwrequest="clr-namespace:Postwoman.Models.PwRequestViewModel" d:DataContext="{d:DesignInstance Type=pwrequest:RequestViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid DataContext="{Binding SelectedCollection.SelectedRequest}">
@@ -93,7 +94,7 @@
 
             </TabItem>
             <TabItem Header="Query">
-                <DataGrid ItemsSource="{Binding Query}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False">
+                <DataGrid ItemsSource="{Binding Query}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="Enabled?" Width="Auto" Binding="{Binding IsChecked}"/>
                         <DataGridTextColumn Header="Name" FontFamily="Consolas" Width="1*" Binding="{Binding Name}"/>
@@ -102,7 +103,7 @@
                 </DataGrid>
             </TabItem>
             <TabItem Header="Headers">
-                <DataGrid ItemsSource="{Binding Headers}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False">
+                <DataGrid ItemsSource="{Binding Headers}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" FontFamily="Consolas" Width="1*" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>
@@ -114,11 +115,23 @@
                     <TextBox BorderThickness="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" Text="{Binding Body}" AcceptsReturn="True" AcceptsTab="True"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Actions">
+                <DataGrid ItemsSource="{Binding Actions}" HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" CanUserReorderColumns="False" AutoGenerateColumns="False" d:ItemsSource="{d:SampleData ItemCount=2}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="When" Width="1*" Binding="{Binding When, Mode=TwoWay}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Action" Width="1*" Binding="{Binding Action, Mode=TwoWay}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Variable Name" FontFamily="Consolas" Width="2*" Binding="{Binding VariableName, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Property Name" FontFamily="Consolas" Width="2*" Binding="{Binding PropertyName, Mode=TwoWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
         </TabControl>
+        
         <GridSplitter ResizeDirection="Rows" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        
         <TabControl Grid.Row="3" DataContext="{Binding LatestResponse}" Margin="10,5,10,10">
             <TabItem Header="Headers">
-                <DataGrid HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Headers}">
+                <DataGrid HorizontalGridLinesBrush="Silver" VerticalGridLinesBrush="Silver" BorderThickness="0" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Headers}" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" FontFamily="Consolas" Width="1*" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Value" Width="4*" Binding="{Binding Value}"/>

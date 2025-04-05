@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Postwoman.Models.PwRequest;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -74,6 +75,8 @@ public class RequestViewModel : INotifyPropertyChanged
         }
     }
 
+    public ObservableCollection<RequestActionViewModel> Actions { get; set; } = [];
+
     private ResponseViewModel _latestResponse;
 
     public ResponseViewModel LatestResponse
@@ -122,4 +125,42 @@ public class RequestViewModel : INotifyPropertyChanged
         };
     }
 
+    public Request ToFile()
+    {
+        return new Request
+        {
+            Name = Name,
+            Method = Method,
+            Url = Url,
+            Authorization = Authorization == null ? null : new PwRequest.RequestAuthorization
+            {
+                Type = Authorization.Type,
+                BasicUserName = Authorization.BasicUserName,
+                BasicPassword = Authorization.BasicPassword,
+                ApiKeyHeaderName = Authorization.ApiKeyHeaderName,
+                ApiKeyValue = Authorization.ApiKeyValue,
+                BearerToken = Authorization.BearerToken
+            },
+            Headers = [..Headers.Select(h => new RequestHeader
+            {
+                Name = h.Name,
+                Value = h.Value
+            })],
+            Query = [..Query.Select(q => new RequestParameter
+            {
+                Name = q.Name,
+                Value = q.Value
+            })],
+            Body = Body,
+            Actions = [..Actions.Select(a => new RequestAction
+            {
+                When = a.When,
+                SetVariableFromJsonResponse = new SetVariableFromJsonResponseAction
+                {
+                     VariableName = a.VariableName,
+                    JsonPath = a.PropertyName
+                }
+            })]
+        };
+    }
 }
